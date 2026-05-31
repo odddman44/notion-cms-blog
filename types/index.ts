@@ -1,4 +1,3 @@
-import type { ReactNode } from "react"
 import type { LucideIcon } from "lucide-react"
 
 export interface NavItem {
@@ -17,8 +16,32 @@ export interface SidebarGroup {
   items: SidebarItem[]
 }
 
-export interface PageHeaderProps {
+export interface Post {
+  id: string
   title: string
-  description?: string
-  children?: ReactNode
+  category: string
+  tags: string[]
+  publishedAt: Date
+  status: "draft" | "published"
+  slug: string
+}
+
+export interface NotionRichText {
+  plain_text: string
+  href: string | null
+  annotations: {
+    bold: boolean
+    italic: boolean
+    strikethrough: boolean
+    underline: boolean
+    code: boolean
+    color: string
+  }
+}
+
+export interface NotionBlock {
+  id: string
+  type: string
+  content: Record<string, unknown>
+  children: NotionBlock[]
 }

@@ -19,11 +19,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "StarterKit",
-    template: "%s | StarterKit",
+    default: "Daily Blog",
+    template: "%s | Daily Blog",
   },
-  description:
-    "Next.js + TypeScript + TailwindCSS + ShadcnUI로 빠르게 시작하는 모던 웹 스타터킷",
+  description: "Notion을 CMS로 활용하는 개인 데일리 블로그",
 }
 
 export default function RootLayout({
