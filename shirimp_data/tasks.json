@@ -1,0 +1,500 @@
+{
+  "tasks": [
+    {
+      "id": "0b2c2c50-0065-45fa-b71a-f65e7b7f6723",
+      "name": "검증 결과 반영 — ROADMAP.md 갱신 및 /tasks 기록 파일 작성",
+      "description": "T001/T002/T003 검증이 모두 통과로 확인되면 docs/ROADMAP.md의 48행/58행/68행 '상태: [ ]'를 '상태: [x]'로만 변경(다른 텍스트·포맷은 원문 그대로 유지)하고, /tasks 디렉토리를 새로 생성하여 001-setup.md / 002-routes-layout.md / 003-types-constants.md 3개 파일에 각 작업의 검증 항목·결과(통과/미흡)·근거(파일 경로 및 코드/설정 스니펫)를 한국어로 기록한다. 만약 선행 검증에서 미흡 항목이 발견되면 해당 체크박스는 갱신하지 않고 기록 파일에 미흡 사유를 명시한다.",
+      "notes": "ROADMAP.md는 기존 포맷(들여쓰기, '상태: [ ]' 표기 위치)을 절대 변경하지 않고 체크박스 텍스트만 교체한다. /tasks 파일명은 사용자가 제시한 예시를 그대로 사용한다. 커밋 메시지 작성 시에는 한국어 사용 (단, 커밋은 사용자 명시적 요청 시에만).",
+      "status": "pending",
+      "dependencies": [
+        {
+          "taskId": "5a1a23af-8c9a-47b6-b880-39c47fbb149d"
+        },
+        {
+          "taskId": "cb9b0104-5cb8-4c13-b09d-8e635a3819b6"
+        },
+        {
+          "taskId": "08fc423a-d273-46bd-8722-c85e5e1ec82f"
+        }
+      ],
+      "createdAt": "2026-06-07T07:59:36.805Z",
+      "updatedAt": "2026-06-07T07:59:36.805Z",
+      "relatedFiles": [
+        {
+          "path": "docs/ROADMAP.md",
+          "type": "TO_MODIFY",
+          "description": "48/58/68행 '상태: [ ]' → '상태: [x]' 갱신 (검증 통과 시에만)",
+          "lineStart": 46,
+          "lineEnd": 73
+        },
+        {
+          "path": "tasks/001-setup.md",
+          "type": "CREATE",
+          "description": "T001 검증 기록 파일 (검증 항목/결과/근거)"
+        },
+        {
+          "path": "tasks/002-routes-layout.md",
+          "type": "CREATE",
+          "description": "T002 검증 기록 파일 (검증 항목/결과/근거)"
+        },
+        {
+          "path": "tasks/003-types-constants.md",
+          "type": "CREATE",
+          "description": "T003 검증 기록 파일 (검증 항목/결과/근거)"
+        }
+      ],
+      "implementationGuide": "pseudocode:\n1. 선행 3개 작업의 검증 결과를 취합 — 모두 통과인지 확인\n2. 모두 통과라면 docs/ROADMAP.md 48/58/68행의 '상태: [ ]' 문자열만 '상태: [x]'로 Edit (old_string에 충분한 컨텍스트 포함하여 각 줄을 고유하게 특정)\n3. mkdir -p tasks (또는 Write 시 자동 생성)\n4. tasks/001-setup.md 작성: T001 검증 항목별 결과표 + 근거 스니펫 + 종합 결론(통과)\n5. tasks/002-routes-layout.md 작성: T002 검증 항목별 결과표 + 근거 스니펫 + 종합 결론(통과)\n6. tasks/003-types-constants.md 작성: T003 검증 항목별 결과표 + 근거 스니펫 + 종합 결론(통과)\n7. 만약 미흡 항목이 있다면 2번을 생략하고 해당 파일에 '미흡' 사유를 기록",
+      "verificationCriteria": "docs/ROADMAP.md의 48/58/68행이 '상태: [x]'로 변경되고 그 외 내용은 원문과 동일한가(diff로 확인 가능). /tasks 디렉토리에 3개 파일이 생성되고 각 파일에 검증 항목·결과(통과/미흡)·근거가 한국어로 빠짐없이 기록되었는가. 미흡 항목이 있었다면 해당 체크박스는 갱신되지 않고 사유가 기록되었는가.",
+      "analysisResult": "목표: notion-cms-blog 프로젝트의 docs/ROADMAP.md Phase 1(T001~T003)이 명세대로 실제 구현되었는지 코드 변경 없이 검증하고, 통과 시 ROADMAP.md 체크박스(\"상태: [ ]\" → \"상태: [x]\", 48/58/68행)를 갱신하며 /tasks 디렉토리(신규 생성)에 검증 근거 기록 파일 3개(001-setup.md, 002-routes-layout.md, 003-types-constants.md)를 한국어로 작성한다. T001/T002/T003 검증은 서로 다른 파일 집합을 다루므로 독립적으로 수행 가능하고, 마지막 반영 작업만 세 검증 결과에 의존하는 다이아몬드 구조로 설계했다. 코드 구현/리팩토링은 범위 밖이며, 모든 판단은 실제 파일을 직접 읽어 ROADMAP.md 명세 항목과 1:1 대조한 근거에 기반해야 한다(추측 금지). ROADMAP.md 편집 시 \"상태: [ ]\" 줄만 변경하고 그 외 포맷은 절대 손대지 않는다."
+    },
+    {
+      "id": "5a1a23af-8c9a-47b6-b880-39c47fbb149d",
+      "name": "T001 검증 — 프로젝트 초기 설정 및 의존성 구성",
+      "description": "ROADMAP.md T001 명세 6개 항목(Next.js 16/TS 5.x/React 19, TailwindCSS v4 @theme 블록, shadcn/ui radix-nova + components.json, @notionhq/client·lucide-react·sonner 패키지, 경로 alias @/ 및 tsconfig.json, .env.local.example)을 실제 설정 파일과 1:1 대조하여 통과/미흡을 판정하고 근거(파일 경로, 핵심 코드/설정 스니펫)를 정리한다. 코드/설정 변경은 하지 않는다.",
+      "notes": "이미 사용자가 사전 조사로 확보한 사실을 직접 재확인 후 근거로 인용. 코드/설정 변경 금지 — 순수 검증.",
+      "status": "pending",
+      "dependencies": [],
+      "createdAt": "2026-06-07T07:59:36.805Z",
+      "updatedAt": "2026-06-07T08:11:22.671Z",
+      "relatedFiles": [
+        {
+          "path": "package.json",
+          "type": "REFERENCE",
+          "description": "Next.js/React/TypeScript 버전 및 핵심 의존성 확인"
+        },
+        {
+          "path": "app/globals.css",
+          "type": "REFERENCE",
+          "description": "@theme 블록 구성 확인",
+          "lineStart": 1,
+          "lineEnd": 40
+        },
+        {
+          "path": "components.json",
+          "type": "REFERENCE",
+          "description": "shadcn/ui style: radix-nova 설정 확인"
+        },
+        {
+          "path": "tsconfig.json",
+          "type": "REFERENCE",
+          "description": "경로 alias @/* 설정 확인"
+        },
+        {
+          "path": ".env.local.example",
+          "type": "REFERENCE",
+          "description": "NOTION_API_KEY, NOTION_DATABASE_ID 키 존재 확인"
+        },
+        {
+          "path": "docs/ROADMAP.md",
+          "type": "REFERENCE",
+          "description": "T001 명세 원문 대조 (46~54행)",
+          "lineStart": 46,
+          "lineEnd": 54
+        }
+      ],
+      "implementationGuide": "pseudocode:\n1. package.json에서 next/react/typescript/@notionhq/client/lucide-react/sonner 버전·존재 확인 (이미 16.2.6/19.2.4/^5/^5.22.0/^1.14.0/^2.0.7 확인됨)\n2. app/globals.css의 @theme 블록 존재 및 색상/폰트 변수 매핑 확인\n3. components.json의 style 값이 'radix-nova'인지 확인 (이미 확인됨)\n4. tsconfig.json의 compilerOptions.paths에 '@/*': ['./*'] 존재 확인 (이미 확인됨)\n5. .env.local.example에 NOTION_API_KEY, NOTION_DATABASE_ID 키 존재 확인 (이미 확인됨)\n6. 6개 항목 종합 판정 결과를 다음 작업(반영)에서 활용하도록 정리",
+      "verificationCriteria": "T001 명세 6개 항목 각각에 대해 실제 파일에서 확인한 근거(파일 경로 + 핵심 값/스니펫)를 빠짐없이 정리하고 통과/미흡을 명시했는가. 미흡 항목이 있다면 구체적으로 어떤 항목이 어떻게 다른지 기록했는가.",
+      "analysisResult": "목표: notion-cms-blog 프로젝트의 docs/ROADMAP.md에 정의된 Phase 1→2→3→4(T001~T016) 순서를 그대로 따라, \"체크박스는 모두 [ ]이지만 실제 코드는 Phase 1~3 대부분 이미 구현됨(2026-05-31 'MVP 구조 구현' 커밋)\"이라는 괴리를 먼저 검증·반영하고, 그 위에서 진짜 미착수 구간(T013, Phase4)을 계획한다. 모든 검증 작업은 코드 변경 없이 ROADMAP 명세와 1:1 대조하여 통과/미흡을 판정하며, 통과분만 docs/ROADMAP.md의 \"상태: [ ]\" 줄을 \"상태: [x]\"로 교체하고 `See: /tasks/XXX-xxx.md` 참조를 추가한다(그 외 포맷은 절대 변경 금지). /tasks 디렉토리를 신설하여 `XXX-description.md` 형식의 한국어 기록 파일을 작성한다. Phase3 검증과 T013에서는 ROADMAP 워크플로우 규칙(API/비즈니스 로직 작업 시 Playwright MCP 테스트 필수)을 적용하되, 실제 .env.local 파일이 없어 Notion API 연동이 동작하지 않는 현재 상태를 고려해 \"정적 코드 검증\"과 \"실제 API 연동 기반 Playwright 검증\"을 분리하고, 후자는 환경변수 설정을 전제조건으로 명시한다. Phase4(T014~T016)는 실제 코드 변경이 필요한 첫 신규 구현 영역이므로 이번 계획에서는 \"작업 명세 파일 작성\"까지로 범위를 한정하고, 실제 구현은 ROADMAP 워크플로우의 \"각 단계 완료 후 중단하고 추가 지시 대기\" 원칙에 따라 사용자 승인 후 후속 turn에서 진행한다. 기존 shirimp_data/tasks.json에 남아있던 T001~T003 검증 작업과 \"검증 결과 반영\" 작업은 이름을 유지해 재사용하되, 후자는 Phase2 검증까지 포괄하도록 범위를 확장 재정의한다."
+    },
+    {
+      "id": "cb9b0104-5cb8-4c13-b09d-8e635a3819b6",
+      "name": "T002 검증 — 라우트 구조 및 레이아웃 골격 생성",
+      "description": "ROADMAP.md T002 명세 6개 항목(루트 레이아웃의 Pretendard+Geist Mono 폰트, (marketing) 라우트 그룹 레이아웃, 홈/글목록/글상세 3개 페이지 파일, ThemeProvider/Toaster 마운트)을 실제 라우트 파일과 1:1 대조하여 통과/미흡을 판정하고 근거를 정리한다. 코드 변경은 하지 않는다.",
+      "notes": "T001/T003 검증과 독립적으로 수행 가능 — 서로 다른 파일 집합. 코드 변경 금지.",
+      "status": "pending",
+      "dependencies": [],
+      "createdAt": "2026-06-07T07:59:36.805Z",
+      "updatedAt": "2026-06-07T08:11:22.671Z",
+      "relatedFiles": [
+        {
+          "path": "app/layout.tsx",
+          "type": "REFERENCE",
+          "description": "폰트 적용, ThemeProvider/Toaster 마운트 확인"
+        },
+        {
+          "path": "app/(marketing)/layout.tsx",
+          "type": "REFERENCE",
+          "description": "Header+Footer 레이아웃 구성 확인"
+        },
+        {
+          "path": "app/(marketing)/page.tsx",
+          "type": "REFERENCE",
+          "description": "홈 페이지 파일 확인"
+        },
+        {
+          "path": "app/(marketing)/posts/page.tsx",
+          "type": "REFERENCE",
+          "description": "글 목록 페이지 파일 확인"
+        },
+        {
+          "path": "app/(marketing)/posts/[slug]/page.tsx",
+          "type": "REFERENCE",
+          "description": "글 상세 페이지 파일 확인"
+        },
+        {
+          "path": "docs/ROADMAP.md",
+          "type": "REFERENCE",
+          "description": "T002 명세 원문 대조 (56~64행)",
+          "lineStart": 56,
+          "lineEnd": 64
+        }
+      ],
+      "implementationGuide": "pseudocode:\n1. app/layout.tsx에서 Pretendard/Geist Mono 폰트 적용, ThemeProvider/Toaster 마운트 코드 확인\n2. app/(marketing)/layout.tsx에서 Header+Footer 구성 확인\n3. app/(marketing)/page.tsx, posts/page.tsx, posts/[slug]/page.tsx 파일 존재 및 컴포넌트 export 확인\n4. 6개 항목 종합 판정",
+      "verificationCriteria": "T002 명세 6개 항목 각각에 대해 실제 파일 근거(경로+스니펫)를 정리하고 통과/미흡을 명시했는가.",
+      "analysisResult": "목표: notion-cms-blog 프로젝트의 docs/ROADMAP.md에 정의된 Phase 1→2→3→4(T001~T016) 순서를 그대로 따라, \"체크박스는 모두 [ ]이지만 실제 코드는 Phase 1~3 대부분 이미 구현됨(2026-05-31 'MVP 구조 구현' 커밋)\"이라는 괴리를 먼저 검증·반영하고, 그 위에서 진짜 미착수 구간(T013, Phase4)을 계획한다. 모든 검증 작업은 코드 변경 없이 ROADMAP 명세와 1:1 대조하여 통과/미흡을 판정하며, 통과분만 docs/ROADMAP.md의 \"상태: [ ]\" 줄을 \"상태: [x]\"로 교체하고 `See: /tasks/XXX-xxx.md` 참조를 추가한다(그 외 포맷은 절대 변경 금지). /tasks 디렉토리를 신설하여 `XXX-description.md` 형식의 한국어 기록 파일을 작성한다. Phase3 검증과 T013에서는 ROADMAP 워크플로우 규칙(API/비즈니스 로직 작업 시 Playwright MCP 테스트 필수)을 적용하되, 실제 .env.local 파일이 없어 Notion API 연동이 동작하지 않는 현재 상태를 고려해 \"정적 코드 검증\"과 \"실제 API 연동 기반 Playwright 검증\"을 분리하고, 후자는 환경변수 설정을 전제조건으로 명시한다. Phase4(T014~T016)는 실제 코드 변경이 필요한 첫 신규 구현 영역이므로 이번 계획에서는 \"작업 명세 파일 작성\"까지로 범위를 한정하고, 실제 구현은 ROADMAP 워크플로우의 \"각 단계 완료 후 중단하고 추가 지시 대기\" 원칙에 따라 사용자 승인 후 후속 turn에서 진행한다. 기존 shirimp_data/tasks.json에 남아있던 T001~T003 검증 작업과 \"검증 결과 반영\" 작업은 이름을 유지해 재사용하되, 후자는 Phase2 검증까지 포괄하도록 범위를 확장 재정의한다."
+    },
+    {
+      "id": "08fc423a-d273-46bd-8722-c85e5e1ec82f",
+      "name": "T003 검증 — 타입 정의 및 공통 상수 작성",
+      "description": "ROADMAP.md T003 명세 4개 항목(types/index.ts의 Post/NotionBlock/NotionRichText/NavItem 타입, Notion DB 속성 모델링, lib/constants.ts의 APP_NAME/NAV_LINKS, lib/utils.ts의 cn())을 실제 코드와 1:1 대조하여 통과/미흡을 판정하고 근거를 정리한다. 코드 변경은 하지 않는다.",
+      "notes": "T001/T002 검증과 독립 수행 가능. 코드 변경 금지 — 순수 검증.",
+      "status": "pending",
+      "dependencies": [],
+      "createdAt": "2026-06-07T07:59:36.805Z",
+      "updatedAt": "2026-06-07T08:11:22.671Z",
+      "relatedFiles": [
+        {
+          "path": "types/index.ts",
+          "type": "REFERENCE",
+          "description": "Post/NotionBlock/NotionRichText/NavItem 타입 및 DB 속성 모델링 확인",
+          "lineStart": 1,
+          "lineEnd": 47
+        },
+        {
+          "path": "lib/constants.ts",
+          "type": "REFERENCE",
+          "description": "APP_NAME/NAV_LINKS 확인"
+        },
+        {
+          "path": "lib/utils.ts",
+          "type": "REFERENCE",
+          "description": "cn() 정의 확인"
+        },
+        {
+          "path": "docs/ROADMAP.md",
+          "type": "REFERENCE",
+          "description": "T003 명세 원문 대조 (66~72행)",
+          "lineStart": 66,
+          "lineEnd": 72
+        }
+      ],
+      "implementationGuide": "pseudocode:\n1. types/index.ts에서 Post(id/title/category/tags/publishedAt/status/slug)/NotionRichText/NotionBlock/NavItem interface 정의 확인 및 Notion DB 속성(Status/Category/Tags/PublishedAt/Slug)과의 1:1 대응 판정\n2. lib/constants.ts에서 APP_NAME/NAV_LINKS export 확인\n3. lib/utils.ts에서 cn()(clsx+tailwind-merge) 정의 확인\n4. 4개 항목 종합 판정",
+      "verificationCriteria": "T003 명세 4개 항목 각각에 대해 근거(경로+타입/함수 스니펫)를 정리하고 통과/미흡을 명시했는가. 특히 Notion DB 속성과 Post 타입 필드의 대응 관계를 명확히 기술했는가.",
+      "analysisResult": "목표: notion-cms-blog 프로젝트의 docs/ROADMAP.md에 정의된 Phase 1→2→3→4(T001~T016) 순서를 그대로 따라, \"체크박스는 모두 [ ]이지만 실제 코드는 Phase 1~3 대부분 이미 구현됨(2026-05-31 'MVP 구조 구현' 커밋)\"이라는 괴리를 먼저 검증·반영하고, 그 위에서 진짜 미착수 구간(T013, Phase4)을 계획한다. 모든 검증 작업은 코드 변경 없이 ROADMAP 명세와 1:1 대조하여 통과/미흡을 판정하며, 통과분만 docs/ROADMAP.md의 \"상태: [ ]\" 줄을 \"상태: [x]\"로 교체하고 `See: /tasks/XXX-xxx.md` 참조를 추가한다(그 외 포맷은 절대 변경 금지). /tasks 디렉토리를 신설하여 `XXX-description.md` 형식의 한국어 기록 파일을 작성한다. Phase3 검증과 T013에서는 ROADMAP 워크플로우 규칙(API/비즈니스 로직 작업 시 Playwright MCP 테스트 필수)을 적용하되, 실제 .env.local 파일이 없어 Notion API 연동이 동작하지 않는 현재 상태를 고려해 \"정적 코드 검증\"과 \"실제 API 연동 기반 Playwright 검증\"을 분리하고, 후자는 환경변수 설정을 전제조건으로 명시한다. Phase4(T014~T016)는 실제 코드 변경이 필요한 첫 신규 구현 영역이므로 이번 계획에서는 \"작업 명세 파일 작성\"까지로 범위를 한정하고, 실제 구현은 ROADMAP 워크플로우의 \"각 단계 완료 후 중단하고 추가 지시 대기\" 원칙에 따라 사용자 승인 후 후속 turn에서 진행한다. 기존 shirimp_data/tasks.json에 남아있던 T001~T003 검증 작업과 \"검증 결과 반영\" 작업은 이름을 유지해 재사용하되, 후자는 Phase2 검증까지 포괄하도록 범위를 확장 재정의한다."
+    },
+    {
+      "id": "befec416-7ee4-4c1f-98a1-90c83c49de9e",
+      "name": "T004·T005 검증 — 레이아웃 및 공유 컴포넌트 구현",
+      "description": "ROADMAP.md T004(Header/Footer/MobileNav 레이아웃 컴포넌트, usePathname 기반 active 링크, 반응형 md=768px)와 T005(PostCard/CategoryBadge/TagBadge/SearchInput/Logo/ThemeToggle 공유 컴포넌트, debounce 적용)의 명세 항목을 실제 컴포넌트 파일과 1:1 대조하여 통과/미흡을 판정하고 근거를 정리한다. 코드 변경은 하지 않는다.",
+      "notes": "T001~T003 검증과 독립 수행 가능 — 컴포넌트 파일만 다룸. 코드 변경 금지.",
+      "status": "pending",
+      "dependencies": [],
+      "createdAt": "2026-06-07T08:11:22.671Z",
+      "updatedAt": "2026-06-07T08:11:22.671Z",
+      "relatedFiles": [
+        {
+          "path": "components/layout/header.tsx",
+          "type": "REFERENCE",
+          "description": "로고/네비/테마토글/active 링크 확인"
+        },
+        {
+          "path": "components/layout/footer.tsx",
+          "type": "REFERENCE",
+          "description": "카피라이트/부가링크 확인"
+        },
+        {
+          "path": "components/layout/mobile-nav.tsx",
+          "type": "REFERENCE",
+          "description": "모바일 햄버거 메뉴(md:hidden) 확인"
+        },
+        {
+          "path": "components/shared/post-card.tsx",
+          "type": "REFERENCE",
+          "description": "카드 UI(제목/카테고리뱃지/발행일) 확인"
+        },
+        {
+          "path": "components/shared/category-badge.tsx",
+          "type": "REFERENCE",
+          "description": "카테고리 뱃지 확인"
+        },
+        {
+          "path": "components/shared/tag-badge.tsx",
+          "type": "REFERENCE",
+          "description": "태그 뱃지 확인"
+        },
+        {
+          "path": "components/shared/search-input.tsx",
+          "type": "REFERENCE",
+          "description": "검색 입력 + debounce 확인"
+        },
+        {
+          "path": "components/shared/logo.tsx",
+          "type": "REFERENCE",
+          "description": "로고 컴포넌트 확인"
+        },
+        {
+          "path": "components/shared/theme-toggle.tsx",
+          "type": "REFERENCE",
+          "description": "테마 토글 확인"
+        },
+        {
+          "path": "docs/ROADMAP.md",
+          "type": "REFERENCE",
+          "description": "T004·T005 명세 원문 대조 (78~94행)",
+          "lineStart": 78,
+          "lineEnd": 94
+        }
+      ],
+      "implementationGuide": "pseudocode:\n1. components/layout/header.tsx, footer.tsx, mobile-nav.tsx를 읽어 로고/네비게이션/테마토글/햄버거메뉴(md:hidden)/usePathname active 처리 확인\n2. components/shared/post-card.tsx, category-badge.tsx, tag-badge.tsx, search-input.tsx, logo.tsx, theme-toggle.tsx를 읽어 각 컴포넌트의 props 구조와 ROADMAP 명세 부합 여부 확인 (SearchInput의 debounce 적용 여부는 hooks/use-debounce.ts 사용 확인으로 판정)\n3. T004 6항목 + T005 5항목 종합 판정",
+      "verificationCriteria": "T004 6항목, T005 5항목 각각에 대해 근거(경로+스니펫)를 정리하고 통과/미흡을 명시했는가.",
+      "analysisResult": "목표: notion-cms-blog 프로젝트의 docs/ROADMAP.md에 정의된 Phase 1→2→3→4(T001~T016) 순서를 그대로 따라, \"체크박스는 모두 [ ]이지만 실제 코드는 Phase 1~3 대부분 이미 구현됨(2026-05-31 'MVP 구조 구현' 커밋)\"이라는 괴리를 먼저 검증·반영하고, 그 위에서 진짜 미착수 구간(T013, Phase4)을 계획한다. 모든 검증 작업은 코드 변경 없이 ROADMAP 명세와 1:1 대조하여 통과/미흡을 판정하며, 통과분만 docs/ROADMAP.md의 \"상태: [ ]\" 줄을 \"상태: [x]\"로 교체하고 `See: /tasks/XXX-xxx.md` 참조를 추가한다(그 외 포맷은 절대 변경 금지). /tasks 디렉토리를 신설하여 `XXX-description.md` 형식의 한국어 기록 파일을 작성한다. Phase3 검증과 T013에서는 ROADMAP 워크플로우 규칙(API/비즈니스 로직 작업 시 Playwright MCP 테스트 필수)을 적용하되, 실제 .env.local 파일이 없어 Notion API 연동이 동작하지 않는 현재 상태를 고려해 \"정적 코드 검증\"과 \"실제 API 연동 기반 Playwright 검증\"을 분리하고, 후자는 환경변수 설정을 전제조건으로 명시한다. Phase4(T014~T016)는 실제 코드 변경이 필요한 첫 신규 구현 영역이므로 이번 계획에서는 \"작업 명세 파일 작성\"까지로 범위를 한정하고, 실제 구현은 ROADMAP 워크플로우의 \"각 단계 완료 후 중단하고 추가 지시 대기\" 원칙에 따라 사용자 승인 후 후속 turn에서 진행한다. 기존 shirimp_data/tasks.json에 남아있던 T001~T003 검증 작업과 \"검증 결과 반영\" 작업은 이름을 유지해 재사용하되, 후자는 Phase2 검증까지 포괄하도록 범위를 확장 재정의한다."
+    },
+    {
+      "id": "5575d582-ef17-4567-bb52-8d8e86b1d704",
+      "name": "T006~T008 검증 — 홈/글 목록/글 상세 페이지 UI 구현",
+      "description": "ROADMAP.md T006(홈 최신글 6개 그리드, 전체보기 버튼), T007(목록 카드그리드+카테고리 탭+검색+empty state+PostsView 분리), T008(상세 헤더 구성, 본문 블록 렌더링, 목록 링크, notFound)의 명세 항목을 실제 페이지/컴포넌트 파일과 대조하여 통과/미흡을 판정한다. 단, ROADMAP이 의도한 \"더미 데이터로 먼저 UI 완성 후 실제 API로 교체\"하는 단계적 워크플로우는 건너뛰고 커밋 7bc270e('MVP 구조 구현')에서 처음부터 실제 Notion 데이터로 직접 구현되었다는 사실을 기록 파일에 명시하고, 최종 결과물이 명세의 UI/구조 요구사항을 충족하는지를 기준으로 통과 여부를 판정한다. 코드 변경은 하지 않는다.",
+      "notes": "T010·T012(데이터 연동 검증)와 동일 파일을 다루지만 관점이 다름(UI/구조 vs 데이터 연동) — 기록 파일에서 상호 참조하여 중복 서술 회피. 코드 변경 금지.",
+      "status": "pending",
+      "dependencies": [],
+      "createdAt": "2026-06-07T08:11:22.671Z",
+      "updatedAt": "2026-06-07T08:11:22.671Z",
+      "relatedFiles": [
+        {
+          "path": "app/(marketing)/page.tsx",
+          "type": "REFERENCE",
+          "description": "홈 6개 카드 그리드, 전체보기 버튼 확인 (UI 관점)"
+        },
+        {
+          "path": "app/(marketing)/posts/page.tsx",
+          "type": "REFERENCE",
+          "description": "글 목록 페이지 구조 확인"
+        },
+        {
+          "path": "components/shared/posts-view.tsx",
+          "type": "REFERENCE",
+          "description": "카테고리 필터, 검색, empty state 확인"
+        },
+        {
+          "path": "app/(marketing)/posts/[slug]/page.tsx",
+          "type": "REFERENCE",
+          "description": "상세 헤더/본문/목록링크/notFound 확인 (UI 관점)"
+        },
+        {
+          "path": "docs/ROADMAP.md",
+          "type": "REFERENCE",
+          "description": "T006~T008 명세 원문 대조 (96~120행)",
+          "lineStart": 96,
+          "lineEnd": 120
+        }
+      ],
+      "implementationGuide": "pseudocode:\n1. app/(marketing)/page.tsx에서 최신글 6개 슬라이스(posts.slice(0,6))와 grid 클래스(sm:grid-cols-2 lg:grid-cols-3), '전체 글 보기' 버튼/Link 확인\n2. app/(marketing)/posts/page.tsx + components/shared/posts-view.tsx에서 카테고리 탭 필터, SearchInput, empty state(검색 결과 없음 메시지), 클라이언트 컴포넌트 분리 구조 확인\n3. app/(marketing)/posts/[slug]/page.tsx에서 헤더(제목/카테고리뱃지/발행일/태그), NotionRenderer 렌더링, '목록으로 돌아가기' 링크, notFound() 호출 확인\n4. '더미→실데이터 직행' 사실을 별도 단락으로 명시하고 그로 인한 누락/이슈가 있는지 점검\n5. T006 4항목 + T007 5항목 + T008 5항목 종합 판정",
+      "verificationCriteria": "T006 4항목, T007 5항목, T008 5항목 각각의 근거를 정리하고 통과/미흡을 판정했는가. '더미 데이터 단계 건너뜀' 사실과 그 영향(문제 여부)을 명시했는가.",
+      "analysisResult": "목표: notion-cms-blog 프로젝트의 docs/ROADMAP.md에 정의된 Phase 1→2→3→4(T001~T016) 순서를 그대로 따라, \"체크박스는 모두 [ ]이지만 실제 코드는 Phase 1~3 대부분 이미 구현됨(2026-05-31 'MVP 구조 구현' 커밋)\"이라는 괴리를 먼저 검증·반영하고, 그 위에서 진짜 미착수 구간(T013, Phase4)을 계획한다. 모든 검증 작업은 코드 변경 없이 ROADMAP 명세와 1:1 대조하여 통과/미흡을 판정하며, 통과분만 docs/ROADMAP.md의 \"상태: [ ]\" 줄을 \"상태: [x]\"로 교체하고 `See: /tasks/XXX-xxx.md` 참조를 추가한다(그 외 포맷은 절대 변경 금지). /tasks 디렉토리를 신설하여 `XXX-description.md` 형식의 한국어 기록 파일을 작성한다. Phase3 검증과 T013에서는 ROADMAP 워크플로우 규칙(API/비즈니스 로직 작업 시 Playwright MCP 테스트 필수)을 적용하되, 실제 .env.local 파일이 없어 Notion API 연동이 동작하지 않는 현재 상태를 고려해 \"정적 코드 검증\"과 \"실제 API 연동 기반 Playwright 검증\"을 분리하고, 후자는 환경변수 설정을 전제조건으로 명시한다. Phase4(T014~T016)는 실제 코드 변경이 필요한 첫 신규 구현 영역이므로 이번 계획에서는 \"작업 명세 파일 작성\"까지로 범위를 한정하고, 실제 구현은 ROADMAP 워크플로우의 \"각 단계 완료 후 중단하고 추가 지시 대기\" 원칙에 따라 사용자 승인 후 후속 turn에서 진행한다. 기존 shirimp_data/tasks.json에 남아있던 T001~T003 검증 작업과 \"검증 결과 반영\" 작업은 이름을 유지해 재사용하되, 후자는 Phase2 검증까지 포괄하도록 범위를 확장 재정의한다."
+    },
+    {
+      "id": "f6e30a33-5388-4c0c-9a81-3312d2cc9fda",
+      "name": "Phase 1·2 검증 결과 반영 — ROADMAP.md 갱신 및 /tasks 기록 파일 작성",
+      "description": "T001/T002/T003/T004·T005/T006~T008 검증(선행 5개 작업)이 완료되면 결과를 취합하여, 통과로 판정된 항목에 한해 docs/ROADMAP.md의 해당 \"상태: [ ]\" 줄만 \"상태: [x]\"로 변경하고 `See: /tasks/XXX-xxx.md` 참조를 추가한다(그 외 텍스트·들여쓰기·포맷은 원문 그대로 유지). /tasks 디렉토리를 새로 생성하고 5개 기록 파일(001-setup.md, 002-routes-layout.md, 003-types-constants.md, 004-005-components.md, 006-008-pages-ui.md)에 각 작업의 검증 항목·결과(통과/미흡)·근거를 한국어로 기록한다. 미흡 항목이 있으면 해당 체크박스는 갱신하지 않고 기록 파일에 사유를 명시한다.",
+      "notes": "기존 '검증 결과 반영' 작업(T001~T003 한정)을 Phase2(T004~T008)까지 포괄하도록 범위를 확장 재정의함. ROADMAP.md는 '상태: [ ]' 표기 줄만 교체하고 그 외 포맷은 절대 변경 금지. /tasks 파일명은 사용자 제시 예시 패턴을 그대로 사용. 커밋은 사용자 명시적 요청 시에만(요청 시 한국어 메시지, Co-Authored-By 트레일러 금지).",
+      "status": "pending",
+      "dependencies": [
+        {
+          "taskId": "5a1a23af-8c9a-47b6-b880-39c47fbb149d"
+        },
+        {
+          "taskId": "cb9b0104-5cb8-4c13-b09d-8e635a3819b6"
+        },
+        {
+          "taskId": "08fc423a-d273-46bd-8722-c85e5e1ec82f"
+        },
+        {
+          "taskId": "befec416-7ee4-4c1f-98a1-90c83c49de9e"
+        },
+        {
+          "taskId": "5575d582-ef17-4567-bb52-8d8e86b1d704"
+        }
+      ],
+      "createdAt": "2026-06-07T08:11:22.671Z",
+      "updatedAt": "2026-06-07T08:11:22.671Z",
+      "relatedFiles": [
+        {
+          "path": "docs/ROADMAP.md",
+          "type": "TO_MODIFY",
+          "description": "48/58/68/80/90/98/106/115행 '상태: [ ]' → '상태: [x] — See: ...' 갱신 (검증 통과 항목만)",
+          "lineStart": 46,
+          "lineEnd": 121
+        },
+        {
+          "path": "tasks/001-setup.md",
+          "type": "CREATE",
+          "description": "T001 검증 기록 파일"
+        },
+        {
+          "path": "tasks/002-routes-layout.md",
+          "type": "CREATE",
+          "description": "T002 검증 기록 파일"
+        },
+        {
+          "path": "tasks/003-types-constants.md",
+          "type": "CREATE",
+          "description": "T003 검증 기록 파일"
+        },
+        {
+          "path": "tasks/004-005-components.md",
+          "type": "CREATE",
+          "description": "T004·T005 검증 기록 파일"
+        },
+        {
+          "path": "tasks/006-008-pages-ui.md",
+          "type": "CREATE",
+          "description": "T006~T008 검증 기록 파일"
+        }
+      ],
+      "implementationGuide": "pseudocode:\n1. 선행 5개 검증 결과 취합 — 항목별 통과/미흡 확인\n2. 통과 항목만 docs/ROADMAP.md의 48/58/68/80/90/98/106/115행 '상태: [ ]'를 '상태: [x] — See: /tasks/XXX-xxx.md' 형태로 Edit (old_string에 충분한 컨텍스트를 포함해 각 줄을 고유하게 특정)\n3. mkdir -p tasks\n4. tasks/001-setup.md ~ tasks/006-008-pages-ui.md 5개 파일 작성: 각 작업의 검증 항목별 결과표 + 근거 스니펫 + 종합 결론(통과/미흡)\n5. 미흡 항목 발견 시 해당 체크박스 갱신 생략 + 기록 파일에 사유 기재",
+      "verificationCriteria": "docs/ROADMAP.md에서 통과 판정된 줄만 '상태: [x] — See: ...'로 바뀌고 그 외 내용은 원문과 동일한가(diff로 확인). /tasks에 5개 파일이 생성되고 각각 검증 항목·결과·근거가 한국어로 기록되었는가. 미흡 항목은 체크박스 미갱신 + 사유 기록이 되었는가.",
+      "analysisResult": "목표: notion-cms-blog 프로젝트의 docs/ROADMAP.md에 정의된 Phase 1→2→3→4(T001~T016) 순서를 그대로 따라, \"체크박스는 모두 [ ]이지만 실제 코드는 Phase 1~3 대부분 이미 구현됨(2026-05-31 'MVP 구조 구현' 커밋)\"이라는 괴리를 먼저 검증·반영하고, 그 위에서 진짜 미착수 구간(T013, Phase4)을 계획한다. 모든 검증 작업은 코드 변경 없이 ROADMAP 명세와 1:1 대조하여 통과/미흡을 판정하며, 통과분만 docs/ROADMAP.md의 \"상태: [ ]\" 줄을 \"상태: [x]\"로 교체하고 `See: /tasks/XXX-xxx.md` 참조를 추가한다(그 외 포맷은 절대 변경 금지). /tasks 디렉토리를 신설하여 `XXX-description.md` 형식의 한국어 기록 파일을 작성한다. Phase3 검증과 T013에서는 ROADMAP 워크플로우 규칙(API/비즈니스 로직 작업 시 Playwright MCP 테스트 필수)을 적용하되, 실제 .env.local 파일이 없어 Notion API 연동이 동작하지 않는 현재 상태를 고려해 \"정적 코드 검증\"과 \"실제 API 연동 기반 Playwright 검증\"을 분리하고, 후자는 환경변수 설정을 전제조건으로 명시한다. Phase4(T014~T016)는 실제 코드 변경이 필요한 첫 신규 구현 영역이므로 이번 계획에서는 \"작업 명세 파일 작성\"까지로 범위를 한정하고, 실제 구현은 ROADMAP 워크플로우의 \"각 단계 완료 후 중단하고 추가 지시 대기\" 원칙에 따라 사용자 승인 후 후속 turn에서 진행한다. 기존 shirimp_data/tasks.json에 남아있던 T001~T003 검증 작업과 \"검증 결과 반영\" 작업은 이름을 유지해 재사용하되, 후자는 Phase2 검증까지 포괄하도록 범위를 확장 재정의한다."
+    },
+    {
+      "id": "86f667b6-be95-4812-b291-835d74f44153",
+      "name": "T009~T012 검증 — Notion API 연동 및 핵심 기능 구현",
+      "description": "ROADMAP.md T009(Notion 클라이언트/getPosts/getPostBySlug/getPostBlocks/매핑/ISR), T010(홈·목록 페이지 데이터 연동, 동적 카테고리), T011(NotionRenderer 블록 렌더러), T012(상세 페이지 연동, generateStaticParams/generateMetadata, notFound)의 명세 항목을 lib/notion.ts·lib/notion-renderer.tsx·페이지 파일과 정적으로 1:1 대조하여 통과/미흡을 판정한다. 추가로 프로젝트 루트에 .env.local 파일 존재 여부를 확인하여: (a) 존재하고 유효한 Notion API 키/DB ID가 설정된 경우 Playwright MCP로 실제 페이지 렌더링·데이터 표시·404·메타데이터 동작을 검증하고, (b) 존재하지 않거나 키가 무효한 경우 정적 코드 검증까지만 수행하고 \"실제 API 연동 동작 검증은 환경변수 설정 후 재개 필요\"라는 보류 사유를 명확히 기록한다.",
+      "notes": "ROADMAP 워크플로우 규칙상 'API/비즈니스 로직 작업 시 Playwright MCP 테스트 필수'를 적용하되, 실제 Notion 워크스페이스 접근(.env.local)이 없으면 동작 검증 자체가 불가능하므로 정적 검증과 동작 검증을 분리해 처리. 재귀 호출되는 getPostBlocks 등 실제 API 비용이 있는 코드는 정적 검증 단계에서 호출하지 않는다(불필요한 rate limit 위험 방지). 이 작업은 P1·P2 반영 작업 완료 후 진행해 ROADMAP 동시편집 충돌을 피한다.",
+      "status": "pending",
+      "dependencies": [
+        {
+          "taskId": "f6e30a33-5388-4c0c-9a81-3312d2cc9fda"
+        }
+      ],
+      "createdAt": "2026-06-07T08:11:22.671Z",
+      "updatedAt": "2026-06-07T08:11:22.671Z",
+      "relatedFiles": [
+        {
+          "path": "lib/notion.ts",
+          "type": "REFERENCE",
+          "description": "getPosts/getPostBySlug/getPostBlocks/pageToPost 확인",
+          "lineStart": 1,
+          "lineEnd": 87
+        },
+        {
+          "path": "lib/notion-renderer.tsx",
+          "type": "REFERENCE",
+          "description": "NotionRenderer 블록 타입별 렌더링 확인",
+          "lineStart": 1,
+          "lineEnd": 146
+        },
+        {
+          "path": "app/(marketing)/page.tsx",
+          "type": "REFERENCE",
+          "description": "홈 데이터 연동 확인 (데이터 관점)"
+        },
+        {
+          "path": "app/(marketing)/posts/page.tsx",
+          "type": "REFERENCE",
+          "description": "목록 데이터 연동·동적 카테고리 확인"
+        },
+        {
+          "path": "app/(marketing)/posts/[slug]/page.tsx",
+          "type": "REFERENCE",
+          "description": "상세 데이터 연동·SEO 메타데이터 확인 (데이터 관점)"
+        },
+        {
+          "path": ".env.local.example",
+          "type": "REFERENCE",
+          "description": "필요한 환경변수 키 확인"
+        },
+        {
+          "path": "docs/ROADMAP.md",
+          "type": "TO_MODIFY",
+          "description": "T009~T012 명세 대조 및 통과 시 126/137/146/155행 갱신 (126~162행)",
+          "lineStart": 126,
+          "lineEnd": 162
+        },
+        {
+          "path": "tasks/006-notion-integration.md",
+          "type": "CREATE",
+          "description": "T009~T012 검증 기록 파일 (정적 검증 + 동작 검증 또는 보류 사유)"
+        }
+      ],
+      "implementationGuide": "pseudocode:\n1. ls -la .env.local 로 실제 환경변수 파일 존재 여부 확인\n2. lib/notion.ts를 읽어 getPosts(Status=published 필터+PublishedAt 정렬)/getPostBySlug/getPostBlocks(재귀 페이지네이션)/pageToPost 매핑 함수와 ROADMAP 명세 대조\n3. lib/notion-renderer.tsx를 읽어 10종 블록(paragraph/heading_1~3/bulleted·numbered list/quote/code/image/divider) 지원과 NotionRichText annotation 처리 확인\n4. app/(marketing)/page.tsx, posts/page.tsx에서 getPosts 호출/카테고리 동적 생성, posts/[slug]/page.tsx에서 generateStaticParams/generateMetadata/revalidate=3600 확인\n5. .env.local 존재 시: npm run dev로 로컬 서버 구동 → Playwright MCP로 /, /posts, /posts/[slug] 접속하여 실제 데이터 표시·404(없는 slug)·메타데이터 검증\n   .env.local 부재 시: 4번까지의 정적 검증 결과만으로 판정하고 동작 검증은 보류로 기록\n6. T009 6항목 + T010 5항목 + T011 5항목 + T012 5항목 종합 판정 → 통과분은 docs/ROADMAP.md 126/137/146/155행 갱신 + tasks/006-notion-integration.md 작성",
+      "verificationCriteria": "T009 6항목, T010 5항목, T011 5항목, T012 5항목의 정적 검증 근거가 빠짐없이 기록되었는가. .env.local 유무에 따라 동작 검증을 수행했거나 명확한 보류 사유를 기록했는가. 통과 항목만 ROADMAP에 반영되고 /tasks/006-notion-integration.md가 한국어로 작성되었는가.",
+      "analysisResult": "목표: notion-cms-blog 프로젝트의 docs/ROADMAP.md에 정의된 Phase 1→2→3→4(T001~T016) 순서를 그대로 따라, \"체크박스는 모두 [ ]이지만 실제 코드는 Phase 1~3 대부분 이미 구현됨(2026-05-31 'MVP 구조 구현' 커밋)\"이라는 괴리를 먼저 검증·반영하고, 그 위에서 진짜 미착수 구간(T013, Phase4)을 계획한다. 모든 검증 작업은 코드 변경 없이 ROADMAP 명세와 1:1 대조하여 통과/미흡을 판정하며, 통과분만 docs/ROADMAP.md의 \"상태: [ ]\" 줄을 \"상태: [x]\"로 교체하고 `See: /tasks/XXX-xxx.md` 참조를 추가한다(그 외 포맷은 절대 변경 금지). /tasks 디렉토리를 신설하여 `XXX-description.md` 형식의 한국어 기록 파일을 작성한다. Phase3 검증과 T013에서는 ROADMAP 워크플로우 규칙(API/비즈니스 로직 작업 시 Playwright MCP 테스트 필수)을 적용하되, 실제 .env.local 파일이 없어 Notion API 연동이 동작하지 않는 현재 상태를 고려해 \"정적 코드 검증\"과 \"실제 API 연동 기반 Playwright 검증\"을 분리하고, 후자는 환경변수 설정을 전제조건으로 명시한다. Phase4(T014~T016)는 실제 코드 변경이 필요한 첫 신규 구현 영역이므로 이번 계획에서는 \"작업 명세 파일 작성\"까지로 범위를 한정하고, 실제 구현은 ROADMAP 워크플로우의 \"각 단계 완료 후 중단하고 추가 지시 대기\" 원칙에 따라 사용자 승인 후 후속 turn에서 진행한다. 기존 shirimp_data/tasks.json에 남아있던 T001~T003 검증 작업과 \"검증 결과 반영\" 작업은 이름을 유지해 재사용하되, 후자는 Phase2 검증까지 포괄하도록 범위를 확장 재정의한다."
+    },
+    {
+      "id": "67fb7074-67a6-46ab-9bae-653702daf565",
+      "name": "T013 통합 테스트 작업 명세 작성 — Playwright E2E 시나리오",
+      "description": "ROADMAP.md T013(핵심 기능 통합 테스트) 명세에 따라 /tasks/007-integration-test.md를 작성한다. 홈→글목록→글상세 전체 사용자 플로우, 카테고리 필터와 검색의 조합 동작, 빈 상태(empty state)·404·ISR revalidate 동작, 모바일/태블릿/데스크탑 반응형 동작을 검증하는 Playwright MCP 테스트 시나리오를 단계별로 구체화한다. 이 작업은 \"테스트 명세 작성\"까지이며, 실제 테스트 실행은 .env.local 환경변수가 설정된 이후 별도 턴에서 수행하도록 전제조건과 재개 조건을 명시한다.",
+      "notes": "ROADMAP의 'API/비즈니스 로직 작업 시 Playwright MCP 테스트 시나리오 필수' 규칙 준수. 새 작업 파일은 빈 체크박스로 시작하고 변경 사항 요약은 포함하지 않는다(ROADMAP 워크플로우 26행 규칙).",
+      "status": "pending",
+      "dependencies": [
+        {
+          "taskId": "86f667b6-be95-4812-b291-835d74f44153"
+        }
+      ],
+      "createdAt": "2026-06-07T08:11:22.671Z",
+      "updatedAt": "2026-06-07T08:11:22.671Z",
+      "relatedFiles": [
+        {
+          "path": "tasks/007-integration-test.md",
+          "type": "CREATE",
+          "description": "T013 통합 테스트 명세 파일"
+        },
+        {
+          "path": "docs/ROADMAP.md",
+          "type": "REFERENCE",
+          "description": "T013 명세 원문 (164~169행)",
+          "lineStart": 164,
+          "lineEnd": 169
+        }
+      ],
+      "implementationGuide": "pseudocode:\n1. ROADMAP T013의 4개 검증 범위(전체 플로우/필터+검색 조합/빈상태·404·ISR/반응형)를 Playwright MCP 단계로 분해\n   - 시나리오1: '/' 접속 → 카드 클릭 → '/posts/[slug]' 이동 → '목록으로 돌아가기' → '/posts' 확인\n   - 시나리오2: 카테고리 탭 클릭 + 검색어 입력 동시 적용 시 필터링 결과 검증\n   - 시나리오3: 존재하지 않는 검색어로 빈 상태 메시지, 존재하지 않는 slug로 404, revalidate 동작 확인 방법\n   - 시나리오4: browser_resize로 모바일(375px)/태블릿(768px)/데스크탑(1280px) 뷰포트 전환 후 레이아웃 확인\n2. 각 시나리오의 사전조건(예: 발행된 글이 N개 이상 존재해야 함)과 .env.local 미설정 시 스킵 분기·재개 조건을 명시\n3. /tasks/007-integration-test.md를 ROADMAP.md 워크플로우 형식(고수준 명세/관련 파일/수락 기준/구현 단계, 빈 체크박스로 시작)에 맞춰 한국어로 작성",
+      "verificationCriteria": "tasks/007-integration-test.md에 4개 검증 범위 각각에 대한 Playwright MCP 단계별 시나리오, 사전조건, 환경변수 미설정 시 스킵/재개 조건이 한국어로 빠짐없이 기술되었는가. ROADMAP 워크플로우의 작업 파일 형식(빈 체크박스 시작)을 따랐는가.",
+      "analysisResult": "목표: notion-cms-blog 프로젝트의 docs/ROADMAP.md에 정의된 Phase 1→2→3→4(T001~T016) 순서를 그대로 따라, \"체크박스는 모두 [ ]이지만 실제 코드는 Phase 1~3 대부분 이미 구현됨(2026-05-31 'MVP 구조 구현' 커밋)\"이라는 괴리를 먼저 검증·반영하고, 그 위에서 진짜 미착수 구간(T013, Phase4)을 계획한다. 모든 검증 작업은 코드 변경 없이 ROADMAP 명세와 1:1 대조하여 통과/미흡을 판정하며, 통과분만 docs/ROADMAP.md의 \"상태: [ ]\" 줄을 \"상태: [x]\"로 교체하고 `See: /tasks/XXX-xxx.md` 참조를 추가한다(그 외 포맷은 절대 변경 금지). /tasks 디렉토리를 신설하여 `XXX-description.md` 형식의 한국어 기록 파일을 작성한다. Phase3 검증과 T013에서는 ROADMAP 워크플로우 규칙(API/비즈니스 로직 작업 시 Playwright MCP 테스트 필수)을 적용하되, 실제 .env.local 파일이 없어 Notion API 연동이 동작하지 않는 현재 상태를 고려해 \"정적 코드 검증\"과 \"실제 API 연동 기반 Playwright 검증\"을 분리하고, 후자는 환경변수 설정을 전제조건으로 명시한다. Phase4(T014~T016)는 실제 코드 변경이 필요한 첫 신규 구현 영역이므로 이번 계획에서는 \"작업 명세 파일 작성\"까지로 범위를 한정하고, 실제 구현은 ROADMAP 워크플로우의 \"각 단계 완료 후 중단하고 추가 지시 대기\" 원칙에 따라 사용자 승인 후 후속 turn에서 진행한다. 기존 shirimp_data/tasks.json에 남아있던 T001~T003 검증 작업과 \"검증 결과 반영\" 작업은 이름을 유지해 재사용하되, 후자는 Phase2 검증까지 포괄하도록 범위를 확장 재정의한다."
+    },
+    {
+      "id": "428a9637-6176-4138-b56b-cdb711cc1caa",
+      "name": "Phase 4(T014~T016) 작업 명세 파일 작성 — 최적화 및 배포 가이드",
+      "description": "ROADMAP.md Phase 4의 T014(성능/접근성 최적화), T015(Vercel 배포 및 환경변수 구성), T016(운영 문서화)에 대한 작업 명세 파일 3개(/tasks/008-performance-a11y.md, /tasks/009-deploy-guide.md, /tasks/010-docs.md)를 작성한다. T015는 실제 프로덕션 배포(사용자의 Vercel 계정 작업이라 외부 의존)는 범위 밖으로 명시하고 \"Vercel 연결 절차 가이드 + 환경변수 체크리스트 + ISR 갱신 검증 방법\" 형태로 한정한다. T016은 README.md에 이미 기술스택/페이지구조/Notion 속성/시작하기가 작성되어 있음을 확인했으므로, 중복 작성 대신 \"트러블슈팅 섹션\"과 \"발행 워크플로우(Notion에서 Status를 published로 변경 → ISR 갱신까지의 흐름과 소요시간)\" 보완 위주로 범위를 좁혀 명세한다.",
+      "notes": "이번 계획에서는 '명세 파일 작성'까지만 수행하고 실제 구현(이미지 최적화 코드 변경, 실제 Vercel 배포, README 편집)은 ROADMAP 워크플로우의 '각 단계 완료 후 중단하고 추가 지시 대기' 원칙에 따라 사용자 승인 후 후속 작업으로 진행한다.",
+      "status": "pending",
+      "dependencies": [
+        {
+          "taskId": "67fb7074-67a6-46ab-9bae-653702daf565"
+        }
+      ],
+      "createdAt": "2026-06-07T08:11:22.671Z",
+      "updatedAt": "2026-06-07T08:11:22.671Z",
+      "relatedFiles": [
+        {
+          "path": "tasks/008-performance-a11y.md",
+          "type": "CREATE",
+          "description": "T014 성능/접근성 최적화 작업 명세"
+        },
+        {
+          "path": "tasks/009-deploy-guide.md",
+          "type": "CREATE",
+          "description": "T015 배포 가이드 작업 명세 (실배포는 범위 밖)"
+        },
+        {
+          "path": "tasks/010-docs.md",
+          "type": "CREATE",
+          "description": "T016 문서화 보완 작업 명세 (README 보완 위주)"
+        },
+        {
+          "path": "docs/ROADMAP.md",
+          "type": "REFERENCE",
+          "description": "Phase4 T014~T016 명세 원문 (172~199행)",
+          "lineStart": 172,
+          "lineEnd": 199
+        },
+        {
+          "path": "README.md",
+          "type": "REFERENCE",
+          "description": "현재 README 내용 검토 — 중복 방지 위해 기존 작성 범위 확인"
+        }
+      ],
+      "implementationGuide": "pseudocode:\n1. /tasks/008-performance-a11y.md: ROADMAP T014의 4항목(이미지 최적화/Lighthouse 90+/시맨틱HTML·ARIA/폰트 로딩)을 고수준 명세·관련 파일(app/layout.tsx, lib/notion-renderer.tsx의 Image 사용 등)·수락 기준(Lighthouse 점수 임계값)·구현 단계로 작성\n2. /tasks/009-deploy-guide.md: ROADMAP T015의 4항목 중 실제 배포는 범위 밖임을 명시하고, Vercel 프로젝트 연결 절차·Production 환경변수(NOTION_API_KEY/NOTION_DATABASE_ID) 체크리스트·배포 후 ISR 동작 확인 방법을 가이드 형태로 작성\n3. /tasks/010-docs.md: README.md 현재 내용을 검토해 누락된 '트러블슈팅'과 '발행 워크플로우(Status 변경→ISR 갱신, 최대 1시간 소요)' 섹션만 추가하는 좁은 범위로 명세\n4. 3개 파일 모두 ROADMAP 워크플로우 형식(고수준 명세/관련 파일/수락 기준/구현 단계, 빈 체크박스 시작, 변경 요약 미포함)을 따라 한국어로 작성",
+      "verificationCriteria": "3개 명세 파일이 각각 고수준 명세·관련 파일·수락 기준·구현 단계를 포함해 한국어로 작성되었는가. T015가 '가이드' 범위로 한정되고 실배포를 요구하지 않는가. T016이 README와 중복되지 않고 보완 영역(트러블슈팅/발행 워크플로우)에 집중했는가.",
+      "analysisResult": "목표: notion-cms-blog 프로젝트의 docs/ROADMAP.md에 정의된 Phase 1→2→3→4(T001~T016) 순서를 그대로 따라, \"체크박스는 모두 [ ]이지만 실제 코드는 Phase 1~3 대부분 이미 구현됨(2026-05-31 'MVP 구조 구현' 커밋)\"이라는 괴리를 먼저 검증·반영하고, 그 위에서 진짜 미착수 구간(T013, Phase4)을 계획한다. 모든 검증 작업은 코드 변경 없이 ROADMAP 명세와 1:1 대조하여 통과/미흡을 판정하며, 통과분만 docs/ROADMAP.md의 \"상태: [ ]\" 줄을 \"상태: [x]\"로 교체하고 `See: /tasks/XXX-xxx.md` 참조를 추가한다(그 외 포맷은 절대 변경 금지). /tasks 디렉토리를 신설하여 `XXX-description.md` 형식의 한국어 기록 파일을 작성한다. Phase3 검증과 T013에서는 ROADMAP 워크플로우 규칙(API/비즈니스 로직 작업 시 Playwright MCP 테스트 필수)을 적용하되, 실제 .env.local 파일이 없어 Notion API 연동이 동작하지 않는 현재 상태를 고려해 \"정적 코드 검증\"과 \"실제 API 연동 기반 Playwright 검증\"을 분리하고, 후자는 환경변수 설정을 전제조건으로 명시한다. Phase4(T014~T016)는 실제 코드 변경이 필요한 첫 신규 구현 영역이므로 이번 계획에서는 \"작업 명세 파일 작성\"까지로 범위를 한정하고, 실제 구현은 ROADMAP 워크플로우의 \"각 단계 완료 후 중단하고 추가 지시 대기\" 원칙에 따라 사용자 승인 후 후속 turn에서 진행한다. 기존 shirimp_data/tasks.json에 남아있던 T001~T003 검증 작업과 \"검증 결과 반영\" 작업은 이름을 유지해 재사용하되, 후자는 Phase2 검증까지 포괄하도록 범위를 확장 재정의한다."
+    }
+  ]
+}
