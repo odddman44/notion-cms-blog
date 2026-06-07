@@ -1,53 +1,6 @@
 {
   "tasks": [
     {
-      "id": "0b2c2c50-0065-45fa-b71a-f65e7b7f6723",
-      "name": "검증 결과 반영 — ROADMAP.md 갱신 및 /tasks 기록 파일 작성",
-      "description": "T001/T002/T003 검증이 모두 통과로 확인되면 docs/ROADMAP.md의 48행/58행/68행 '상태: [ ]'를 '상태: [x]'로만 변경(다른 텍스트·포맷은 원문 그대로 유지)하고, /tasks 디렉토리를 새로 생성하여 001-setup.md / 002-routes-layout.md / 003-types-constants.md 3개 파일에 각 작업의 검증 항목·결과(통과/미흡)·근거(파일 경로 및 코드/설정 스니펫)를 한국어로 기록한다. 만약 선행 검증에서 미흡 항목이 발견되면 해당 체크박스는 갱신하지 않고 기록 파일에 미흡 사유를 명시한다.",
-      "notes": "ROADMAP.md는 기존 포맷(들여쓰기, '상태: [ ]' 표기 위치)을 절대 변경하지 않고 체크박스 텍스트만 교체한다. /tasks 파일명은 사용자가 제시한 예시를 그대로 사용한다. 커밋 메시지 작성 시에는 한국어 사용 (단, 커밋은 사용자 명시적 요청 시에만).",
-      "status": "pending",
-      "dependencies": [
-        {
-          "taskId": "5a1a23af-8c9a-47b6-b880-39c47fbb149d"
-        },
-        {
-          "taskId": "cb9b0104-5cb8-4c13-b09d-8e635a3819b6"
-        },
-        {
-          "taskId": "08fc423a-d273-46bd-8722-c85e5e1ec82f"
-        }
-      ],
-      "createdAt": "2026-06-07T07:59:36.805Z",
-      "updatedAt": "2026-06-07T07:59:36.805Z",
-      "relatedFiles": [
-        {
-          "path": "docs/ROADMAP.md",
-          "type": "TO_MODIFY",
-          "description": "48/58/68행 '상태: [ ]' → '상태: [x]' 갱신 (검증 통과 시에만)",
-          "lineStart": 46,
-          "lineEnd": 73
-        },
-        {
-          "path": "tasks/001-setup.md",
-          "type": "CREATE",
-          "description": "T001 검증 기록 파일 (검증 항목/결과/근거)"
-        },
-        {
-          "path": "tasks/002-routes-layout.md",
-          "type": "CREATE",
-          "description": "T002 검증 기록 파일 (검증 항목/결과/근거)"
-        },
-        {
-          "path": "tasks/003-types-constants.md",
-          "type": "CREATE",
-          "description": "T003 검증 기록 파일 (검증 항목/결과/근거)"
-        }
-      ],
-      "implementationGuide": "pseudocode:\n1. 선행 3개 작업의 검증 결과를 취합 — 모두 통과인지 확인\n2. 모두 통과라면 docs/ROADMAP.md 48/58/68행의 '상태: [ ]' 문자열만 '상태: [x]'로 Edit (old_string에 충분한 컨텍스트 포함하여 각 줄을 고유하게 특정)\n3. mkdir -p tasks (또는 Write 시 자동 생성)\n4. tasks/001-setup.md 작성: T001 검증 항목별 결과표 + 근거 스니펫 + 종합 결론(통과)\n5. tasks/002-routes-layout.md 작성: T002 검증 항목별 결과표 + 근거 스니펫 + 종합 결론(통과)\n6. tasks/003-types-constants.md 작성: T003 검증 항목별 결과표 + 근거 스니펫 + 종합 결론(통과)\n7. 만약 미흡 항목이 있다면 2번을 생략하고 해당 파일에 '미흡' 사유를 기록",
-      "verificationCriteria": "docs/ROADMAP.md의 48/58/68행이 '상태: [x]'로 변경되고 그 외 내용은 원문과 동일한가(diff로 확인 가능). /tasks 디렉토리에 3개 파일이 생성되고 각 파일에 검증 항목·결과(통과/미흡)·근거가 한국어로 빠짐없이 기록되었는가. 미흡 항목이 있었다면 해당 체크박스는 갱신되지 않고 사유가 기록되었는가.",
-      "analysisResult": "목표: notion-cms-blog 프로젝트의 docs/ROADMAP.md Phase 1(T001~T003)이 명세대로 실제 구현되었는지 코드 변경 없이 검증하고, 통과 시 ROADMAP.md 체크박스(\"상태: [ ]\" → \"상태: [x]\", 48/58/68행)를 갱신하며 /tasks 디렉토리(신규 생성)에 검증 근거 기록 파일 3개(001-setup.md, 002-routes-layout.md, 003-types-constants.md)를 한국어로 작성한다. T001/T002/T003 검증은 서로 다른 파일 집합을 다루므로 독립적으로 수행 가능하고, 마지막 반영 작업만 세 검증 결과에 의존하는 다이아몬드 구조로 설계했다. 코드 구현/리팩토링은 범위 밖이며, 모든 판단은 실제 파일을 직접 읽어 ROADMAP.md 명세 항목과 1:1 대조한 근거에 기반해야 한다(추측 금지). ROADMAP.md 편집 시 \"상태: [ ]\" 줄만 변경하고 그 외 포맷은 절대 손대지 않는다."
-    },
-    {
       "id": "5a1a23af-8c9a-47b6-b880-39c47fbb149d",
       "name": "T001 검증 — 프로젝트 초기 설정 및 의존성 구성",
       "description": "ROADMAP.md T001 명세 6개 항목(Next.js 16/TS 5.x/React 19, TailwindCSS v4 @theme 블록, shadcn/ui radix-nova + components.json, @notionhq/client·lucide-react·sonner 패키지, 경로 alias @/ 및 tsconfig.json, .env.local.example)을 실제 설정 파일과 1:1 대조하여 통과/미흡을 판정하고 근거(파일 경로, 핵심 코드/설정 스니펫)를 정리한다. 코드/설정 변경은 하지 않는다.",
