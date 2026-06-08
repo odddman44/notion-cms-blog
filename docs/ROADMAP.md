@@ -45,17 +45,18 @@ Notion을 CMS로 활용하여 글 작성부터 발행까지 Notion 하나로 관
 
 - **T001: 프로젝트 초기 설정 및 의존성 구성** - 우선순위
   - 관련 기능: 인프라 (전 기능 공통)
-  - 상태: [ ]
+  - 상태: [x] — See: /tasks/001-setup.md
   - Next.js 16(App Router) + TypeScript 5.x + React 19 환경 초기화
   - TailwindCSS v4 설정 (`app/globals.css`의 `@theme` 블록 구성)
   - shadcn/ui(radix-nova 스타일) 초기화 및 `components.json` 구성
   - `@notionhq/client`, `lucide-react`, `sonner` 등 핵심 패키지 설치
   - 경로 alias(`@/`) 설정 및 `tsconfig.json` 정리
   - `.env.local.example` 작성 (Notion API Key, Database ID 등)
+  - > 참고: 실제 `NOTION_DATABASE_ID` 값과 DB 스키마는 T008-1에서 확정한다. T001 단계에서는 키 자리(placeholder)만 정의한다.
 
 - **T002: 라우트 구조 및 레이아웃 골격 생성**
   - 관련 기능: F001, F002 (모든 페이지 공통)
-  - 상태: [ ]
+  - 상태: [x] — See: /tasks/002-routes-layout.md
   - `app/layout.tsx` 루트 레이아웃 구현 (Pretendard + Geist Mono 폰트 적용)
   - `app/(marketing)/layout.tsx` 라우트 그룹 레이아웃 구성
   - `app/(marketing)/page.tsx` (홈) 빈 페이지 생성
@@ -65,7 +66,7 @@ Notion을 CMS로 활용하여 글 작성부터 발행까지 Notion 하나로 관
 
 - **T003: 타입 정의 및 공통 상수 작성**
   - 관련 기능: F001, F002, F003, F010, F011
-  - 상태: [ ]
+  - 상태: [x] — See: /tasks/003-types-constants.md
   - `types/index.ts`에 `Post`, `NotionBlock`, `NotionRichText`, `NavItem` 타입 정의
   - Notion DB 속성(`Status`, `Category`, `Tags`, `PublishedAt`, `Slug`) 타입 모델링
   - `lib/constants.ts`에 `APP_NAME`, `NAV_LINKS` 정의
@@ -95,7 +96,7 @@ Notion을 CMS로 활용하여 글 작성부터 발행까지 Notion 하나로 관
 
 - **T006: 홈 페이지 UI 구현 (더미 데이터)**
   - 관련 기능: F001
-  - 상태: [ ]
+  - 상태: [x] — See: /tasks/006-008-pages-ui.md
   - 최신 글 6개 카드 그리드 (모바일 1열 / 태블릿 2열 / 데스크탑 3열)
   - "전체 글 보기" 버튼 → `/posts` 이동
   - 더미 `Post[]` 데이터로 PostCard 렌더링
@@ -103,7 +104,7 @@ Notion을 CMS로 활용하여 글 작성부터 발행까지 Notion 하나로 관
 
 - **T007: 글 목록 페이지 UI 구현 (더미 데이터)**
   - 관련 기능: F001, F003, F004
-  - 상태: [ ]
+  - 상태: [x] — See: /tasks/006-008-pages-ui.md
   - 전체 글 카드 그리드 + 반응형 레이아웃
   - 카테고리 탭 필터 UI (더미 카테고리 기반)
   - 제목 검색 입력 UI (`SearchInput` 활용)
@@ -112,7 +113,7 @@ Notion을 CMS로 활용하여 글 작성부터 발행까지 Notion 하나로 관
 
 - **T008: 글 상세 페이지 UI 구현 (더미 데이터)**
   - 관련 기능: F002, F011
-  - 상태: [ ]
+  - 상태: [x] — See: /tasks/006-008-pages-ui.md
   - 헤더 영역: 제목, 카테고리 뱃지, 발행일, 태그 목록
   - 본문 영역 더미 블록 렌더링 (paragraph, heading, list, quote, divider, code)
   - "목록으로 돌아가기" 링크
@@ -123,9 +124,21 @@ Notion을 CMS로 활용하여 글 작성부터 발행까지 Notion 하나로 관
 
 더미 데이터를 실제 Notion API 호출로 교체하고, 핵심 비즈니스 로직을 완성하는 단계입니다.
 
+- **T008-1: Notion 데이터베이스 생성, 스키마 확정, Integration 연결** - 우선순위
+  - 관련 기능: F010 (T009~T012 전체의 선행 조건 / blocking prerequisite)
+  - 상태: [ ] — See: /tasks/008-1-notion-database-setup.md
+  - 작업 성격: **사용자가 Notion UI에서 직접 수행하는 수동 작업** + 그 결과(DB ID·속성명/타입)를 AI에 전달해 코드와 정합성을 맞추는 작업. 코드로 대체 불가.
+  - 사용자 작업: Notion에 블로그용 DB 생성, 아래 5개 속성 정의, Integration(Read content) 생성·연결, 샘플 글 1건 발행
+  - `lib/notion.ts`가 기대하는 정확한 속성 스펙 (대소문자까지 일치 필요):
+    - `Title` (title) / `Category` (select) / `Tags` (multi_select) / `PublishedAt` (date) / `Status` (status, 옵션 값 `published`·`draft` 정확히 존재)
+    - slug는 별도 속성이 아니라 페이지 ID를 사용하므로 Slug 속성은 불필요
+  - 결과 전달: Integration Secret → `NOTION_API_KEY`, 데이터 소스 ID → `NOTION_DATABASE_ID`를 `.env.local`에 설정
+  - 정합성 확인: 실제 속성명/타입을 `lib/notion.ts` 하드코딩값과 1:1 대조, 불일치 시 스키마 또는 코드 수정 (속성명 불일치 시 에러 없이 빈 값으로 채워지는 silent failure 주의)
+
 - **T009: Notion API 클라이언트 및 데이터 fetch 함수 구현** - 우선순위
   - 관련 기능: F010
   - 상태: [ ]
+  - 선행 조건: T008-1 완료 (실제 Notion DB·속성·Integration·`.env.local` 설정 완료) 필요
   - `lib/notion.ts`에 `@notionhq/client` v5 기반 클라이언트 초기화
   - `getPosts()`: `dataSources.query({ data_source_id })`로 Status=발행됨 글 목록 조회
   - `getPostBySlug(slug)`: slug로 단건 페이지 조회
