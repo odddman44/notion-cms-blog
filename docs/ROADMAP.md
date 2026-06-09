@@ -78,7 +78,7 @@ Notion을 CMS로 활용하여 글 작성부터 발행까지 Notion 하나로 관
 
 - **T004: 레이아웃 컴포넌트(Header, Footer, MobileNav) 구현**
   - 관련 기능: 전 페이지 공통 네비게이션
-  - 상태: [ ]
+  - 상태: [x] — See: /tasks/004-005-components.md
   - `components/layout/Header.tsx`: 로고, 데스크탑 네비게이션, 테마 토글
   - `components/layout/Footer.tsx`: 카피라이트 및 부가 링크
   - `components/layout/MobileNav.tsx`: 모바일 햄버거 메뉴 (md:hidden)
@@ -87,7 +87,7 @@ Notion을 CMS로 활용하여 글 작성부터 발행까지 Notion 하나로 관
 
 - **T005: 공유 컴포넌트(PostCard, CategoryBadge, TagBadge, SearchInput) 구현**
   - 관련 기능: F001, F003, F004
-  - 상태: [ ]
+  - 상태: [x] — See: /tasks/004-005-components.md
   - `components/shared/PostCard.tsx`: 카드 UI (제목, 카테고리 뱃지, 발행일)
   - `components/shared/CategoryBadge.tsx`: 카테고리 표시용 뱃지
   - `components/shared/TagBadge.tsx`: 태그 표시용 뱃지
