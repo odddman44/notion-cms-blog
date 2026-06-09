@@ -41,6 +41,10 @@ yarn-error.log*
 .mcp.json
 .vscode/
 
+# playwright mcp artifacts
+.playwright-mcp/
+verification-*.png
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
