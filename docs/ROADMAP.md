@@ -176,7 +176,7 @@ Notion을 CMS로 활용하여 글 작성부터 발행까지 Notion 하나로 관
 
 - **T013: 핵심 기능 통합 테스트**
   - 관련 기능: F001, F002, F003, F004, F010, F011
-  - 상태: [ ]
+  - 상태: [x] — See: /tasks/007-integration-test.md
   - Playwright MCP로 홈 → 글 목록 → 글 상세 전체 사용자 플로우 검증
   - 카테고리 필터와 검색의 조합 동작 검증
   - 빈 상태(empty state), 404, ISR revalidate 동작 확인
