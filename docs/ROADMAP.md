@@ -126,7 +126,7 @@ Notion을 CMS로 활용하여 글 작성부터 발행까지 Notion 하나로 관
 
 - **T008-1: Notion 데이터베이스 생성, 스키마 확정, Integration 연결** - 우선순위
   - 관련 기능: F010 (T009~T012 전체의 선행 조건 / blocking prerequisite)
-  - 상태: [ ] — See: /tasks/008-1-notion-database-setup.md
+  - 상태: [x] — See: /tasks/008-1-notion-database-setup.md
   - 작업 성격: **사용자가 Notion UI에서 직접 수행하는 수동 작업** + 그 결과(DB ID·속성명/타입)를 AI에 전달해 코드와 정합성을 맞추는 작업. 코드로 대체 불가.
   - 사용자 작업: Notion에 블로그용 DB 생성, 아래 5개 속성 정의, Integration(Read content) 생성·연결, 샘플 글 1건 발행
   - `lib/notion.ts`가 기대하는 정확한 속성 스펙 (대소문자까지 일치 필요):
@@ -137,7 +137,7 @@ Notion을 CMS로 활용하여 글 작성부터 발행까지 Notion 하나로 관
 
 - **T009: Notion API 클라이언트 및 데이터 fetch 함수 구현** - 우선순위
   - 관련 기능: F010
-  - 상태: [ ]
+  - 상태: [x] — See: /tasks/006-notion-integration.md
   - 선행 조건: T008-1 완료 (실제 Notion DB·속성·Integration·`.env.local` 설정 완료) 필요
   - `lib/notion.ts`에 `@notionhq/client` v5 기반 클라이언트 초기화
   - `getPosts()`: `dataSources.query({ data_source_id })`로 Status=발행됨 글 목록 조회
@@ -149,7 +149,7 @@ Notion을 CMS로 활용하여 글 작성부터 발행까지 Notion 하나로 관
 
 - **T010: 홈 페이지 및 글 목록 페이지 Notion 데이터 연동**
   - 관련 기능: F001, F003, F004, F010
-  - 상태: [ ]
+  - 상태: [x] — See: /tasks/006-notion-integration.md
   - 홈 페이지: `getPosts({ limit: 6 })`로 최신 글 6개 표시
   - 글 목록 페이지: 전체 발행 글 fetch 후 `PostsView`에 전달
   - 카테고리 필터 옵션을 Notion DB Category 값 기반으로 동적 생성
@@ -158,7 +158,7 @@ Notion을 CMS로 활용하여 글 작성부터 발행까지 Notion 하나로 관
 
 - **T011: Notion 블록 렌더러 구현**
   - 관련 기능: F002, F011
-  - 상태: [ ]
+  - 상태: [x] — See: /tasks/006-notion-integration.md
   - `lib/notion-renderer.tsx`에 `NotionRenderer` 컴포넌트 작성
   - 지원 블록: paragraph, heading_1, heading_2, heading_3, image, bulleted_list_item, numbered_list_item, quote, divider, code
   - `NotionRichText` 처리 (bold, italic, code, link 등 annotation)
@@ -167,7 +167,7 @@ Notion을 CMS로 활용하여 글 작성부터 발행까지 Notion 하나로 관
 
 - **T012: 글 상세 페이지 Notion 데이터 연동 및 SEO 메타데이터**
   - 관련 기능: F002, F010, F011
-  - 상태: [ ]
+  - 상태: [x] — See: /tasks/006-notion-integration.md
   - `generateStaticParams()`로 빌드 타임 정적 경로 생성
   - `generateMetadata()`로 페이지별 title/description 동적 설정
   - 존재하지 않는 slug 접근 시 `notFound()` 처리
