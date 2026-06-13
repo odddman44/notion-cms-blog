@@ -1,3 +1,4 @@
+import { Fragment } from "react"
 import Image from "next/image"
 import type { NotionBlock, NotionRichText } from "@/types"
 
@@ -5,19 +6,59 @@ interface NotionRendererProps {
   blocks: NotionBlock[]
 }
 
+type BlockGroup =
+  | { type: "list"; listType: "ul" | "ol"; items: NotionBlock[] }
+  | { type: "block"; block: NotionBlock }
+
+// 연속된 같은 타입의 리스트 아이템을 하나의 ul/ol로 그룹핑
+function groupBlocks(blocks: NotionBlock[]): BlockGroup[] {
+  const groups: BlockGroup[] = []
+
+  for (const block of blocks) {
+    if (block.type === "bulleted_list_item" || block.type === "numbered_list_item") {
+      const listType = block.type === "bulleted_list_item" ? "ul" : "ol"
+      const last = groups[groups.length - 1]
+      if (last?.type === "list" && last.listType === listType) {
+        last.items.push(block)
+      } else {
+        groups.push({ type: "list", listType, items: [block] })
+      }
+    } else {
+      groups.push({ type: "block", block })
+    }
+  }
+
+  return groups
+}
+
 /** Notion 블록 배열을 React 컴포넌트로 렌더링 */
 export function NotionRenderer({ blocks }: NotionRendererProps) {
+  const groups = groupBlocks(blocks)
+
   return (
     <div className="prose prose-neutral dark:prose-invert max-w-none">
-      {blocks.map((block) => (
-        <NotionBlockComponent key={block.id} block={block} />
-      ))}
+      {groups.map((group, i) => {
+        if (group.type === "list") {
+          const ListTag = group.listType
+          return (
+            <ListTag key={i}>
+              {group.items.map((item) => (
+                <li key={item.id}>
+                  <RichTextList richTexts={(item.content.rich_text as NotionRichText[]) ?? []} />
+                  {item.children.length > 0 && <NotionRenderer blocks={item.children} />}
+                </li>
+              ))}
+            </ListTag>
+          )
+        }
+        return <NotionBlockComponent key={group.block.id} block={group.block} />
+      })}
     </div>
   )
 }
 
 function NotionBlockComponent({ block }: { block: NotionBlock }) {
-  const { type, content, children } = block
+  const { type, content } = block
 
   switch (type) {
     case "paragraph":
@@ -46,26 +87,6 @@ function NotionBlockComponent({ block }: { block: NotionBlock }) {
         <h3>
           <RichTextList richTexts={(content.rich_text as NotionRichText[]) ?? []} />
         </h3>
-      )
-
-    case "bulleted_list_item":
-      return (
-        <ul>
-          <li>
-            <RichTextList richTexts={(content.rich_text as NotionRichText[]) ?? []} />
-            {children.length > 0 && <NotionRenderer blocks={children} />}
-          </li>
-        </ul>
-      )
-
-    case "numbered_list_item":
-      return (
-        <ol>
-          <li>
-            <RichTextList richTexts={(content.rich_text as NotionRichText[]) ?? []} />
-            {children.length > 0 && <NotionRenderer blocks={children} />}
-          </li>
-        </ol>
       )
 
     case "quote":
@@ -131,14 +152,14 @@ function RichTextList({ richTexts }: { richTexts: NotionRichText[] }) {
         const { annotations, plain_text, href } = rt
         let node: React.ReactNode = plain_text
 
-        if (annotations.code) node = <code key={i}>{node}</code>
-        if (annotations.bold) node = <strong key={i}>{node}</strong>
-        if (annotations.italic) node = <em key={i}>{node}</em>
-        if (annotations.strikethrough) node = <s key={i}>{node}</s>
-        if (annotations.underline) node = <u key={i}>{node}</u>
-        if (href) node = <a key={i} href={href} target="_blank" rel="noopener noreferrer">{node}</a>
+        if (annotations.code) node = <code>{node}</code>
+        if (annotations.bold) node = <strong>{node}</strong>
+        if (annotations.italic) node = <em>{node}</em>
+        if (annotations.strikethrough) node = <s>{node}</s>
+        if (annotations.underline) node = <u>{node}</u>
+        if (href) node = <a href={href} target="_blank" rel="noopener noreferrer">{node}</a>
 
-        return <span key={i}>{node}</span>
+        return <Fragment key={i}>{node}</Fragment>
       })}
     </>
   )

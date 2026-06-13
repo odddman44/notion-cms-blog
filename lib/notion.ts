@@ -1,3 +1,4 @@
+import { cache } from "react"
 import { Client } from "@notionhq/client"
 import type { Post, NotionBlock } from "@/types"
 
@@ -6,37 +7,54 @@ const DATA_SOURCE_ID = process.env.NOTION_DATABASE_ID!
 
 /** Notion 데이터 소스에서 발행된 글 목록 조회 */
 export async function getPosts(): Promise<Post[]> {
-  const response = await notion.dataSources.query({
-    data_source_id: DATA_SOURCE_ID,
-    filter: {
-      property: "Status",
-      status: { equals: "published" },
-    },
-    sorts: [{ property: "PublishedAt", direction: "descending" }],
-  })
+  const results: Record<string, unknown>[] = []
+  let cursor: string | undefined
 
-  return response.results
+  do {
+    const response = await notion.dataSources.query({
+      data_source_id: DATA_SOURCE_ID,
+      filter: {
+        property: "Status",
+        status: { equals: "published" },
+      },
+      sorts: [{ property: "PublishedAt", direction: "descending" }],
+      start_cursor: cursor,
+    })
+    results.push(...(response.results as Record<string, unknown>[]))
+    cursor = response.has_more ? (response.next_cursor ?? undefined) : undefined
+  } while (cursor)
+
+  return results
     .filter((item) => item.object === "page")
-    .map((item) => pageToPost(item as Record<string, unknown>))
+    .map((item) => pageToPost(item))
 }
 
 /** slug(페이지 ID)로 글 단건 조회 */
-export async function getPostBySlug(slug: string): Promise<Post | null> {
+export const getPostBySlug = cache(async (slug: string): Promise<Post | null> => {
   try {
     const page = await notion.pages.retrieve({ page_id: slug })
     return pageToPost(page as unknown as Record<string, unknown>)
   } catch {
     return null
   }
-}
+})
 
 /** 글 페이지의 블록 목록 조회 */
 export async function getPostBlocks(pageId: string): Promise<NotionBlock[]> {
-  const response = await notion.blocks.children.list({ block_id: pageId })
+  const results: Record<string, unknown>[] = []
+  let cursor: string | undefined
 
-  const blocks = await Promise.all(
-    response.results.map(async (block) => {
-      const b = block as Record<string, unknown>
+  do {
+    const response = await notion.blocks.children.list({
+      block_id: pageId,
+      start_cursor: cursor,
+    })
+    results.push(...(response.results as Record<string, unknown>[]))
+    cursor = response.has_more ? (response.next_cursor ?? undefined) : undefined
+  } while (cursor)
+
+  return Promise.all(
+    results.map(async (b) => {
       const hasChildren = (b.has_children as boolean) ?? false
 
       let children: NotionBlock[] = []
@@ -52,8 +70,6 @@ export async function getPostBlocks(pageId: string): Promise<NotionBlock[]> {
       }
     })
   )
-
-  return blocks
 }
 
 // Notion 페이지 응답을 Post 타입으로 변환
