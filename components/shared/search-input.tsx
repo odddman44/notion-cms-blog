@@ -27,6 +27,7 @@ export function SearchInput({ value, onChange, placeholder = "글 제목 검색.
           debouncedOnChange(e.target.value)
         }}
         placeholder={placeholder}
+        aria-label={placeholder}
         className="pl-9"
       />
     </div>

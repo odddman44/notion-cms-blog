@@ -125,13 +125,15 @@ function NotionBlockComponent({ block }: { block: NotionBlock }) {
       if (!url) return null
       return (
         <figure>
-          <Image
-            src={url}
-            alt={caption}
-            width={800}
-            height={600}
-            className="rounded-md"
-          />
+          <div className="relative aspect-video overflow-hidden rounded-md">
+            <Image
+              src={url}
+              alt={caption}
+              fill
+              sizes="(min-width: 768px) 768px, 100vw"
+              className="object-cover"
+            />
+          </div>
           {caption && <figcaption>{caption}</figcaption>}
         </figure>
       )

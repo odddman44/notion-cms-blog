@@ -36,10 +36,11 @@ export function PostsView({ posts, categories }: PostsViewProps) {
 
       {/* 카테고리 탭 */}
       {categories.length > 0 && (
-        <div className="mb-8 flex flex-wrap gap-2">
+        <div className="mb-8 flex flex-wrap gap-2" role="group" aria-label="카테고리 필터">
           <Button
             variant="ghost"
             size="sm"
+            aria-pressed={activeCategory === null}
             className={cn(activeCategory === null && "bg-accent")}
             onClick={() => setActiveCategory(null)}
           >
@@ -50,6 +51,7 @@ export function PostsView({ posts, categories }: PostsViewProps) {
               key={cat}
               variant="ghost"
               size="sm"
+              aria-pressed={activeCategory === cat}
               className={cn(activeCategory === cat && "bg-accent")}
               onClick={() => setActiveCategory(cat)}
             >
