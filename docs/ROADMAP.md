@@ -188,7 +188,7 @@ Notion을 CMS로 활용하여 글 작성부터 발행까지 Notion 하나로 관
 
 - **T014: 성능 최적화 및 접근성 개선**
   - 관련 기능: 전 기능 공통
-  - 상태: [ ]
+  - 상태: [x] — See: /tasks/008-performance-a11y.md
   - 이미지 최적화 (Next.js Image, `priority`, `sizes` 설정)
   - Lighthouse 기준 Performance/Accessibility/SEO 90+ 달성
   - 시맨틱 HTML 및 ARIA 속성 점검
@@ -204,7 +204,7 @@ Notion을 CMS로 활용하여 글 작성부터 발행까지 Notion 하나로 관
 
 - **T016: 운영 문서화 및 README 정리**
   - 관련 기능: 인프라
-  - 상태: [ ]
+  - 상태: [x] — See: /tasks/010-docs.md
   - `README.md`에 로컬 개발 환경 세팅 가이드 작성
   - Notion DB 스키마(Status, Category, Tags, PublishedAt, Slug) 문서화
   - 글 발행 워크플로우 가이드 (Status 변경 → ISR 갱신) 작성
