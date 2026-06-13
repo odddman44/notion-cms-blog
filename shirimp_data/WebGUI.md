@@ -1,1 +1,0 @@
-[Task Manager UI](http://localhost:58982?lang=en)

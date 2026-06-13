@@ -48,3 +48,7 @@ verification-*.png
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+#shrimp task
+shirimp_data/
+tasks/
