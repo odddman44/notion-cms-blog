@@ -64,6 +64,19 @@ npm run dev
 
 > 즉시 반영을 확인하려면 로컬에서 `npm run dev`로 실행 중인 서버를 재시작하면 캐시 없이 즉시 최신 데이터를 가져옵니다.
 
+### On-demand Revalidation (즉시 반영)
+
+최대 1시간 대기 없이 즉시 반영하려면 `/api/revalidate` 엔드포인트를 호출합니다.
+
+1. `.env.local`(및 Vercel 환경 변수)에 `REVALIDATE_SECRET`을 임의의 랜덤 문자열로 설정합니다.
+2. Notion 데이터베이스의 Automation(`⚡` → New automation)에서 "Status가 published로 변경될 때" 트리거에 webhook 액션을 연결하고, URL을 `https://your-domain.com/api/revalidate?secret=YOUR_REVALIDATE_SECRET`(또는 `&slug=POST_SLUG`로 특정 글만)으로 설정합니다.
+3. 수동으로 트리거하려면 다음과 같이 호출합니다.
+   ```bash
+   curl -H "x-revalidate-secret: $REVALIDATE_SECRET" "https://your-domain.com/api/revalidate"
+   ```
+
+상세 가이드와 보안 주의사항은 [`tasks/011-on-demand-revalidation.md`](./tasks/011-on-demand-revalidation.md)를 참고하세요.
+
 ## 배포
 
 Vercel 배포 시 환경 변수 `NOTION_API_KEY`, `NOTION_DATABASE_ID`를 프로젝트 설정에 추가합니다. 상세 절차는 [배포 가이드](./tasks/009-deploy-guide.md)를 참고하세요.
@@ -75,8 +88,9 @@ Vercel 배포 시 환경 변수 `NOTION_API_KEY`, `NOTION_DATABASE_ID`를 프로
 | 글 제목/카테고리/태그가 빈 값으로 표시됨 | Notion DB 속성명·타입이 `lib/notion.ts`가 기대하는 스펙과 불일치 (속성명 불일치 시 에러 없이 빈 값으로 채워지는 silent failure) | `Title`(title) / `Category`(select) / `Tags`(multi_select) / `PublishedAt`(date) / `Status`(status) 속성명·타입을 대소문자까지 정확히 맞춤 |
 | `getPosts()` 호출 시 인증/권한 에러 | `.env.local`의 `NOTION_API_KEY` 또는 `NOTION_DATABASE_ID` 누락·오타 | `.env.local.example`을 참고해 값을 다시 설정 |
 | Integration 연결 에러 (object_not_found 등) | Notion DB에 Integration이 연결(Connections)되지 않음 | DB 페이지의 `...` → Connections에서 해당 Integration을 연결 |
-| 글을 `published`로 변경했는데 사이트에 보이지 않음 | ISR 캐시(`revalidate=3600`)가 아직 갱신되지 않음 | 최대 1시간 대기 또는 로컬에서 `npm run dev` 재시작으로 즉시 확인 |
+| 글을 `published`로 변경했는데 사이트에 보이지 않음 | ISR 캐시(`revalidate=3600`)가 아직 갱신되지 않음 | 최대 1시간 대기, `/api/revalidate` 수동 호출, 또는 로컬에서 `npm run dev` 재시작으로 즉시 확인 |
 | Notion 이미지 블록이 표시되지 않음 | 이미지 호스트가 `next.config.ts`의 `images.remotePatterns`에 없음 | Notion 이미지 도메인(`*.amazonaws.com`, `*.notion-static.com`)이 등록되어 있는지 확인 |
+| `/api/revalidate` 호출 시 401 또는 webhook 호출 후 갱신 안 됨 | `REVALIDATE_SECRET` 미설정·불일치, 또는 `slug` 파라미터가 실제 글 slug와 다름 | `.env.local`/Vercel의 `REVALIDATE_SECRET` 확인, slug 없이 전체 갱신으로 우선 테스트 |
 
 ## 문서
 

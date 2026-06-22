@@ -129,29 +129,32 @@ Phase 1~4 전체 완료. 상세 내용은 [`docs/roadmaps/ROADMAP_v1.md`](roadma
 
 - **T023: On-demand Revalidation API Route 구현** - 우선순위
   - 관련 기능: F010
-  - 상태: [ ]
+  - 상태: [x]
   - 설명: 외부 트리거로 즉시 캐시를 갱신하는 API Route
   - `app/api/revalidate/route.ts` 구현 (`revalidatePath` / `revalidateTag` 활용)
   - 비밀 토큰(`REVALIDATE_SECRET`) 기반 인증 — 헤더 또는 쿼리 검증, 불일치 시 401
   - 갱신 대상 경로 파라미터 처리 (특정 글 / 전체 목록)
   - 에러 핸들링 및 일관된 JSON 응답 형식 (`{ revalidated, now }`)
   - Playwright MCP(또는 HTTP 호출)로 토큰 검증, 갱신 동작, 인증 실패 케이스 검증
+  - See: `/tasks/011-on-demand-revalidation.md`
 
 - **T024: revalidate 주기 환경 변수화**
   - 관련 기능: F010
-  - 상태: [ ]
+  - 상태: [x]
   - 설명: 하드코딩된 ISR 주기를 환경 변수로 외부화
   - `REVALIDATE_SECONDS` 환경 변수 도입 (미설정 시 기본값 fallback)
   - 각 페이지의 `export const revalidate` 를 상수/설정값 참조로 통일
   - `.env.local.example` 및 문서 갱신
+  - See: `/tasks/011-on-demand-revalidation.md`
 
 - **T025: Notion Webhook 연동 가이드 작성**
   - 관련 기능: F010 / 인프라
-  - 상태: [ ]
+  - 상태: [x]
   - 설명: 발행 시 자동 revalidate 트리거 연결 가이드
   - Notion Automation → 외부 webhook → `/api/revalidate` 호출 흐름 문서화
   - 토큰 전달 방식 및 보안 주의사항 정리
   - 수동 트리거(curl 예시) 및 트러블슈팅 섹션 작성
+  - See: `/tasks/011-on-demand-revalidation.md`
 
 ### Phase 7: 독자 경험(UX) 고도화
 
