@@ -27,6 +27,7 @@ export interface Post {
 }
 
 export interface NotionRichText {
+  type: "text" | "equation" | "mention"
   plain_text: string
   href: string | null
   annotations: {
@@ -37,6 +38,7 @@ export interface NotionRichText {
     code: boolean
     color: string
   }
+  equation?: { expression: string }
 }
 
 export interface NotionBlock {
