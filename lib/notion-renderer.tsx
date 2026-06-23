@@ -31,6 +31,56 @@ const highlighterPromise = createHighlighter({
 interface NotionRendererProps {
   blocks: NotionBlock[]
   isNested?: boolean
+  seenMap?: Map<string, number>
+}
+
+/** heading 텍스트를 앵커 id용 슬러그로 변환 (한글 보존, 공백→하이픈)
+ *  동일 슬러그가 이미 등장한 경우 -2, -3 ... 접미사로 충돌 해소
+ *  렌더러와 페이지의 헤딩 목록 추출이 동일한 id를 생성하도록 seenMap을 외부에서 공유받음 */
+export function slugifyHeading(text: string, seenMap: Map<string, number>): string {
+  const base = text
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^\p{L}\p{N}-]/gu, "")
+
+  const count = seenMap.get(base) ?? 0
+  seenMap.set(base, count + 1)
+
+  return count === 0 ? base : `${base}-${count + 1}`
+}
+
+const HEADING_LEVEL_MAP: Record<string, 1 | 2 | 3> = {
+  heading_1: 1,
+  heading_2: 2,
+  heading_3: 3,
+}
+
+/** Notion 블록 배열(children 포함 재귀)에서 heading_1/2/3을 추출해 목차(TOC) 데이터로 변환
+ *  NotionRenderer와 동일한 순서로 순회하며 동일한 slugifyHeading 함수를 사용해 id 일치를 보장 */
+export function extractHeadings(
+  blocks: NotionBlock[],
+  seenMap: Map<string, number> = new Map()
+): { id: string; text: string; level: 1 | 2 | 3 }[] {
+  const headings: { id: string; text: string; level: 1 | 2 | 3 }[] = []
+
+  for (const block of blocks) {
+    const level = HEADING_LEVEL_MAP[block.type]
+    if (level) {
+      const text =
+        (block.content.rich_text as NotionRichText[])
+          ?.map((rt) => rt.plain_text)
+          .join("") ?? ""
+      if (text) {
+        headings.push({ id: slugifyHeading(text, seenMap), text, level })
+      }
+    }
+    if (block.children.length > 0) {
+      headings.push(...extractHeadings(block.children, seenMap))
+    }
+  }
+
+  return headings
 }
 
 type BlockGroup =
@@ -58,7 +108,7 @@ function groupBlocks(blocks: NotionBlock[]): BlockGroup[] {
   return groups
 }
 
-const listContent = (groups: BlockGroup[]) =>
+const listContent = (groups: BlockGroup[], seenMap: Map<string, number>) =>
   groups.map((group, i) => {
     if (group.type === "list") {
       const ListTag = group.listType
@@ -75,33 +125,41 @@ const listContent = (groups: BlockGroup[]) =>
             <li key={item.id}>
               <RichTextList richTexts={(item.content.rich_text as NotionRichText[]) ?? []} />
               {item.children.length > 0 && (
-                <NotionRenderer blocks={item.children} isNested />
+                <NotionRenderer blocks={item.children} isNested seenMap={seenMap} />
               )}
             </li>
           ))}
         </ListTag>
       )
     }
-    return <NotionBlockComponent key={group.block.id} block={group.block} />
+    return <NotionBlockComponent key={group.block.id} block={group.block} seenMap={seenMap} />
   })
 
 /** Notion 블록 배열을 React 컴포넌트로 렌더링
- *  isNested=true이면 prose wrapper 없이 Fragment로 반환 (중첩 시 wrapper 중복 방지) */
-export function NotionRenderer({ blocks, isNested }: NotionRendererProps) {
+ *  isNested=true이면 prose wrapper 없이 Fragment로 반환 (중첩 시 wrapper 중복 방지)
+ *  seenMap을 넘기지 않으면(최상위 호출) 새로 생성 — 중첩 호출 시 호출자가 동일 맵을 전달해 heading 슬러그를 페이지 전체에서 공유 */
+export function NotionRenderer({ blocks, isNested, seenMap }: NotionRendererProps) {
+  const sharedSeenMap = seenMap ?? new Map<string, number>()
   const groups = groupBlocks(blocks)
 
   if (isNested) {
-    return <>{listContent(groups)}</>
+    return <>{listContent(groups, sharedSeenMap)}</>
   }
 
   return (
     <div className="max-w-none space-y-4 text-base leading-7 text-foreground">
-      {listContent(groups)}
+      {listContent(groups, sharedSeenMap)}
     </div>
   )
 }
 
-async function NotionBlockComponent({ block }: { block: NotionBlock }) {
+async function NotionBlockComponent({
+  block,
+  seenMap,
+}: {
+  block: NotionBlock
+  seenMap: Map<string, number>
+}) {
   const { type, content } = block
 
   switch (type) {
@@ -112,26 +170,32 @@ async function NotionBlockComponent({ block }: { block: NotionBlock }) {
         </p>
       )
 
-    case "heading_1":
+    case "heading_1": {
+      const text = (content.rich_text as NotionRichText[])?.map((rt) => rt.plain_text).join("") ?? ""
       return (
-        <h1 className="mt-8 mb-4 text-3xl font-bold tracking-tight">
+        <h1 id={slugifyHeading(text, seenMap)} className="mt-8 mb-4 text-3xl font-bold tracking-tight">
           <RichTextList richTexts={(content.rich_text as NotionRichText[]) ?? []} />
         </h1>
       )
+    }
 
-    case "heading_2":
+    case "heading_2": {
+      const text = (content.rich_text as NotionRichText[])?.map((rt) => rt.plain_text).join("") ?? ""
       return (
-        <h2 className="mt-6 mb-3 text-2xl font-semibold tracking-tight">
+        <h2 id={slugifyHeading(text, seenMap)} className="mt-6 mb-3 text-2xl font-semibold tracking-tight">
           <RichTextList richTexts={(content.rich_text as NotionRichText[]) ?? []} />
         </h2>
       )
+    }
 
-    case "heading_3":
+    case "heading_3": {
+      const text = (content.rich_text as NotionRichText[])?.map((rt) => rt.plain_text).join("") ?? ""
       return (
-        <h3 className="mt-4 mb-2 text-xl font-semibold">
+        <h3 id={slugifyHeading(text, seenMap)} className="mt-4 mb-2 text-xl font-semibold">
           <RichTextList richTexts={(content.rich_text as NotionRichText[]) ?? []} />
         </h3>
       )
+    }
 
     case "quote":
       return (
@@ -156,7 +220,7 @@ async function NotionBlockComponent({ block }: { block: NotionBlock }) {
           </span>
           {block.children.length > 0 && (
             <div className="ml-6">
-              <NotionRenderer blocks={block.children} isNested />
+              <NotionRenderer blocks={block.children} isNested seenMap={seenMap} />
             </div>
           )}
         </div>
@@ -247,7 +311,7 @@ async function NotionBlockComponent({ block }: { block: NotionBlock }) {
             <RichTextList richTexts={toggleText} />
           </summary>
           <div className="px-4 pb-3 pt-1">
-            <NotionRenderer blocks={block.children} isNested />
+            <NotionRenderer blocks={block.children} isNested seenMap={seenMap} />
           </div>
         </details>
       )
@@ -298,7 +362,7 @@ async function NotionBlockComponent({ block }: { block: NotionBlock }) {
         >
           {block.children.map((col) => (
             <div key={col.id}>
-              <NotionRenderer blocks={col.children} isNested />
+              <NotionRenderer blocks={col.children} isNested seenMap={seenMap} />
             </div>
           ))}
         </div>
@@ -306,10 +370,10 @@ async function NotionBlockComponent({ block }: { block: NotionBlock }) {
     }
 
     case "column":
-      return <NotionRenderer blocks={block.children} isNested />
+      return <NotionRenderer blocks={block.children} isNested seenMap={seenMap} />
 
     case "synced_block":
-      return <NotionRenderer blocks={block.children} isNested />
+      return <NotionRenderer blocks={block.children} isNested seenMap={seenMap} />
 
     case "bookmark":
     case "embed": {

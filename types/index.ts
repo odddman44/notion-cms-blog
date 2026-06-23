@@ -24,6 +24,7 @@ export interface Post {
   publishedAt: Date
   status: "draft" | "published"
   slug: string
+  cover: { type: "external" | "file"; url: string } | null
 }
 
 export interface NotionRichText {

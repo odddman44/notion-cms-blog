@@ -1,8 +1,10 @@
 "use client"
 
 import { useState, useMemo } from "react"
+import { SearchX } from "lucide-react"
 import { PostCard } from "@/components/shared/post-card"
 import { SearchInput } from "@/components/shared/search-input"
+import { EmptyState } from "@/components/shared/empty-state"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import type { Post } from "@/types"
@@ -15,6 +17,8 @@ interface PostsViewProps {
 export function PostsView({ posts, categories }: PostsViewProps) {
   const [query, setQuery] = useState("")
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
+  // 필터 초기화 시 SearchInput을 강제 리마운트해 내부 표시값도 함께 비움
+  const [resetKey, setResetKey] = useState(0)
 
   const filtered = useMemo(() => {
     return posts.filter((post) => {
@@ -31,7 +35,7 @@ export function PostsView({ posts, categories }: PostsViewProps) {
 
       {/* 검색 */}
       <div className="mb-6">
-        <SearchInput value={query} onChange={setQuery} />
+        <SearchInput key={resetKey} value={query} onChange={setQuery} />
       </div>
 
       {/* 카테고리 탭 */}
@@ -63,7 +67,18 @@ export function PostsView({ posts, categories }: PostsViewProps) {
 
       {/* 글 목록 */}
       {filtered.length === 0 ? (
-        <p className="text-sm text-muted-foreground">검색 결과가 없습니다.</p>
+        <EmptyState
+          icon={SearchX}
+          title="검색 결과가 없습니다"
+          action={{
+            label: "필터 초기화",
+            onClick: () => {
+              setQuery("")
+              setActiveCategory(null)
+              setResetKey((k) => k + 1)
+            },
+          }}
+        />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((post) => (

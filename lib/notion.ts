@@ -90,6 +90,16 @@ function pageToPost(page: Record<string, unknown>): Post {
       ? "published"
       : "draft"
 
+  const coverRaw = page.cover as
+    | { type: "external" | "file"; external?: { url: string }; file?: { url: string } }
+    | null
+  const cover = coverRaw
+    ? {
+        type: coverRaw.type,
+        url: (coverRaw.type === "external" ? coverRaw.external?.url : coverRaw.file?.url) ?? "",
+      }
+    : null
+
   return {
     id: page.id as string,
     title,
@@ -98,5 +108,6 @@ function pageToPost(page: Record<string, unknown>): Post {
     publishedAt,
     status,
     slug: page.id as string,
+    cover: cover && cover.url ? cover : null,
   }
 }

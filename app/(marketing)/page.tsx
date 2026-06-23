@@ -1,7 +1,8 @@
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Inbox } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { PostCard } from "@/components/shared/post-card"
+import { EmptyState } from "@/components/shared/empty-state"
 import { getPosts } from "@/lib/notion"
 
 export const revalidate = 3600
@@ -32,7 +33,7 @@ export default async function HomePage() {
         </div>
 
         {recentPosts.length === 0 ? (
-          <p className="text-sm text-muted-foreground">아직 발행된 글이 없습니다.</p>
+          <EmptyState icon={Inbox} title="아직 발행된 글이 없습니다" />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {recentPosts.map((post) => (
