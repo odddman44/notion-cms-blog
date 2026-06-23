@@ -164,50 +164,55 @@ Phase 1~4 전체 완료. 상세 내용은 [`docs/roadmaps/ROADMAP_v1.md`](roadma
 
 - **T026: 목차(TOC) 자동 생성**
   - 관련 기능: F002
-  - 상태: [ ]
+  - 상태: [x]
   - 설명: heading 블록을 파싱하여 자동 목차 생성
   - heading_1/2/3 블록에서 제목/레벨/앵커 ID 추출
   - `TableOfContents` 컴포넌트 (데스크탑 사이드 고정 / 모바일 접기)
   - 스크롤 위치 기반 현재 섹션 하이라이트 (IntersectionObserver)
   - heading 블록에 앵커 ID 부여 및 클릭 시 스무스 스크롤
   - Playwright MCP로 TOC 생성, 앵커 이동, active 하이라이트 검증
+  - See: `/tasks/012-ux-enhancements.md`
 
 - **T027: 읽기 예상 시간 + 이전/다음 글 네비게이션**
   - 관련 기능: F002
-  - 상태: [ ]
+  - 상태: [x]
   - 설명: 본문 분량 기반 읽기 시간과 글 간 이동 동선 제공
   - 본문 텍스트 추출 후 읽기 시간 계산 유틸 (`lib/utils.ts`, 한국어/영어 기준 보정)
   - 글 상세 헤더에 읽기 시간 표시
   - 발행일 정렬 기준 이전/다음 글 조회 (`getPosts` 활용)
   - 글 하단 이전/다음 글 네비게이션 컴포넌트
   - Playwright MCP로 읽기 시간 표시 및 이전/다음 이동 검증
+  - See: `/tasks/012-ux-enhancements.md`
 
 - **T028: 글 커버 이미지 표시**
   - 관련 기능: F002, F010
-  - 상태: [ ]
+  - 상태: [x]
   - 설명: Notion 페이지 커버 이미지를 글 상세/카드에 활용
   - `getPostBySlug` / `getPosts` 응답에 `cover` 필드 추가 (external/file 모두 대응)
   - 글 상세 상단 히어로 커버 이미지 (Next.js `<Image>`, priority)
   - PostCard 썸네일에 커버 이미지 노출 (없을 시 fallback)
   - Playwright MCP로 커버 이미지 렌더링 및 fallback 검증
+  - See: `/tasks/012-ux-enhancements.md`
 
 - **T029: 소셜 공유 버튼 + 스크롤 진행 표시바**
   - 관련 기능: F002
-  - 상태: [ ]
+  - 상태: [x]
   - 설명: 글 확산 및 읽기 진행 피드백 제공
   - 공유 버튼: 트위터/X 공유, 링크 복사(`useCopyToClipboard` + 토스트)
   - 읽기 진행 스크롤 Progress Bar (상단 고정, 스크롤 비율 반영)
   - 접근성: 버튼 aria-label, 키보드 포커스 처리
   - Playwright MCP로 공유 링크 생성, 복사, 진행바 동작 검증
+  - See: `/tasks/012-ux-enhancements.md`
 
 - **T030: 빈 상태(empty state) 개선**
   - 관련 기능: F003, F004
-  - 상태: [ ]
+  - 상태: [x]
   - 설명: 검색/필터 결과 없음 상태를 더 친근하게 개선
   - 일러스트(또는 아이콘) + 안내 메시지 + 액션(필터 초기화) 제공
   - 목록/검색/카테고리별 맥락에 맞는 메시지 분기
   - 다크 모드 및 반응형 대응
   - Playwright MCP로 검색 결과 없음 상태 렌더링 검증
+  - See: `/tasks/012-ux-enhancements.md`
 
 ### Phase 8: SEO 및 디스커버리
 
