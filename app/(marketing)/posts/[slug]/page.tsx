@@ -82,7 +82,7 @@ export default async function PostPage({ params }: PostPageProps) {
           {/* 글 헤더 */}
           <header className="mb-10">
             <div className="mb-3 flex items-center gap-2">
-              <CategoryBadge category={post.category} />
+              <CategoryBadge category={post.category} color={post.categoryColor} />
             </div>
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
               {post.title}
@@ -95,7 +95,7 @@ export default async function PostPage({ params }: PostPageProps) {
             {post.tags.length > 0 && (
               <div className="mt-4 flex flex-wrap gap-1.5">
                 {post.tags.map((tag) => (
-                  <TagBadge key={tag} tag={tag} />
+                  <TagBadge key={tag.name} tag={tag} />
                 ))}
               </div>
             )}
