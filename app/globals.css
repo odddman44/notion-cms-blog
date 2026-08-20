@@ -190,14 +190,16 @@
   color: inherit;
 }
 
-/* Shiki 듀얼 테마: 라이트/다크 전환 */
+/* Shiki 듀얼 테마: 텍스트 색상은 토큰별로 라이트/다크 전환 */
 .shiki, .shiki span {
   color: var(--shiki-light) !important;
-  background-color: var(--shiki-light-bg) !important;
 }
 .dark .shiki, .dark .shiki span {
   color: var(--shiki-dark) !important;
-  background-color: var(--shiki-dark-bg) !important;
+}
+/* 코드블럭 배경은 Shiki 원본 테마(흰색) 대신 사이트 --muted 톤을 사용해 페이지 배경과 구분되게 */
+.shiki {
+  background-color: var(--muted) !important;
 }
 
 @layer base {
