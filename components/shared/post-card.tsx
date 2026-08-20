@@ -27,7 +27,7 @@ export function PostCard({ post }: PostCardProps) {
         )}
         <CardHeader className="pb-2">
           <div className="mb-2 flex items-center gap-2">
-            <CategoryBadge category={post.category} />
+            <CategoryBadge category={post.category} color={post.categoryColor} />
           </div>
           <CardTitle className="line-clamp-2 text-base font-semibold group-hover:text-primary transition-colors">
             {post.title}

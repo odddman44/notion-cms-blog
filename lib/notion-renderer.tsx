@@ -246,6 +246,9 @@ async function NotionBlockComponent({
       const html = highlighter.codeToHtml(plainText, {
         lang: language,
         themes: { light: "github-light", dark: "github-dark" },
+        // globals.css의 .shiki 규칙이 --shiki-light/--shiki-dark 변수를 참조하므로
+        // 라이트 테마 색도 인라인 color가 아닌 변수로 내보내도록 설정
+        defaultColor: false,
       })
 
       return (

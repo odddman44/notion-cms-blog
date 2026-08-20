@@ -1,6 +1,6 @@
 import { cache } from "react"
 import { Client } from "@notionhq/client"
-import type { Post, NotionBlock } from "@/types"
+import type { Post, NotionBlock, NotionTagColor } from "@/types"
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY })
 const DATA_SOURCE_ID = process.env.NOTION_DATABASE_ID!
@@ -80,10 +80,15 @@ function pageToPost(page: Record<string, unknown>): Post {
 
   const title =
     (props.Title?.title as Array<{ plain_text: string }>)?.[0]?.plain_text ?? ""
-  const category =
-    (props.Category?.select as { name: string } | null)?.name ?? ""
+  const categorySelect = props.Category?.select as
+    | { name: string; color: NotionTagColor }
+    | null
+  const category = categorySelect?.name ?? ""
+  const categoryColor = categorySelect?.color ?? "default"
   const tags =
-    (props.Tags?.multi_select as Array<{ name: string }>)?.map((t) => t.name) ?? []
+    (props.Tags?.multi_select as Array<{ name: string; color: NotionTagColor }>)?.map(
+      (t) => ({ name: t.name, color: t.color })
+    ) ?? []
   const publishedAt = new Date(
     (props.PublishedAt?.date as { start: string } | null)?.start ?? Date.now()
   )
@@ -106,6 +111,7 @@ function pageToPost(page: Record<string, unknown>): Post {
     id: page.id as string,
     title,
     category,
+    categoryColor,
     tags,
     publishedAt,
     status,

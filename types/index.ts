@@ -16,11 +16,30 @@ export interface SidebarGroup {
   items: SidebarItem[]
 }
 
+/** Notion multi_select 옵션 색상 (select 속성 color enum과 동일) */
+export type NotionTagColor =
+  | "default"
+  | "gray"
+  | "brown"
+  | "orange"
+  | "yellow"
+  | "green"
+  | "blue"
+  | "purple"
+  | "pink"
+  | "red"
+
+export interface Tag {
+  name: string
+  color: NotionTagColor
+}
+
 export interface Post {
   id: string
   title: string
   category: string
-  tags: string[]
+  categoryColor: NotionTagColor
+  tags: Tag[]
   publishedAt: Date
   status: "draft" | "published"
   slug: string
