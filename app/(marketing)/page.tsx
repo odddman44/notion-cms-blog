@@ -15,7 +15,7 @@ export default async function HomePage() {
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
       <section className="mb-16">
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          Daily Blog
+          oddd&apos;s Blog
         </h1>
         <p className="mt-3 text-muted-foreground">
           일상과 개발 이야기를 기록합니다.
