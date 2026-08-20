@@ -32,8 +32,10 @@ export async function getPosts(): Promise<Post[]> {
 /** slug(페이지 ID)로 글 단건 조회 */
 export const getPostBySlug = cache(async (slug: string): Promise<Post | null> => {
   try {
-    const page = await notion.pages.retrieve({ page_id: slug })
-    return pageToPost(page as unknown as Record<string, unknown>)
+    const page = await notion.pages.retrieve({ page_id: slug }) as unknown as Record<string, unknown>
+    // 휴지통으로 이동된 페이지는 pages.retrieve가 에러 없이 반환하므로 별도 체크 필요
+    if (page.archived || page.in_trash) return null
+    return pageToPost(page)
   } catch {
     return null
   }
