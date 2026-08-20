@@ -19,8 +19,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Daily Blog",
-    template: "%s | Daily Blog",
+    default: "oddd's Blog",
+    template: "%s | oddd's Blog",
   },
   description: "Notion을 CMS로 활용하는 개인 데일리 블로그",
 }
